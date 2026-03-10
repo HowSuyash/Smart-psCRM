@@ -1,0 +1,29 @@
+# Dependency directories
+node_modules/
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+
+# PPT generation artifacts
+*.pptx
+~$*.pptx
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE files
+.vscode/
+.idea/
+*.suo
+*.user
+
+# Environment
+.env
+.env.local
+
+# Logs
+*.log

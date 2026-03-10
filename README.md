@@ -6,6 +6,7 @@
 A web-based, AI-assisted, real-time civic grievance management platform that connects citizens directly with the right government department — no app download, no login required for tracking, no server costs.
 
 [![Live Demo](https://img.shields.io/badge/Live%20Demo-Open%20index.html-blue?style=for-the-badge)](index.html)
+[![Demo Video](https://img.shields.io/badge/Demo%20Video-Watch%20Now-red?style=for-the-badge&logo=google-drive)](https://drive.google.com/file/d/1BvhKTSOiJBS4cqGuRTViAYkHfZNquVjM/view?usp=sharing)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 [![Tech](https://img.shields.io/badge/Built%20With-HTML%20%7C%20CSS%20%7C%20JavaScript-orange?style=for-the-badge)](#tech-stack)
 
@@ -129,6 +130,12 @@ Username: admin
 Password: admin123
 ```
 **GitHub Repo:** [github.com/HowSuyash/Smary-psCRM](https://github.com/HowSuyash/Smary-psCRM)
+
+---
+
+## 🎬 Demo Video
+
+▶️ **[Watch the full demo on Google Drive](https://drive.google.com/file/d/1BvhKTSOiJBS4cqGuRTViAYkHfZNquVjM/view?usp=sharing)**
 
 ---
 

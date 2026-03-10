@@ -180,6 +180,5 @@ This project is licensed under the **MIT License** — feel free to use, modify,
 ## 👤 Author
 
 **Developed for India Innovates 2026**
-Bengaluru City Corporation Use Case
 
 > *"Digitizing civic governance — one complaint at a time."*

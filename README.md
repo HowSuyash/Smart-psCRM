@@ -128,7 +128,7 @@ npx serve .
 Username: admin
 Password: admin123
 ```
-**GitHub Repo:** [github.com/HowSuyash/Smart-psCRM](https://github.com/HowSuyash/Smart-psCRM)
+**GitHub Repo:** [github.com/HowSuyash/Smary-psCRM](https://github.com/HowSuyash/Smary-psCRM)
 
 ---
 
@@ -179,7 +179,7 @@ This project is licensed under the **MIT License** — feel free to use, modify,
 
 ## 👤 Author
 
-**Developed for Hackathon 2026**
+**Developed for India Innovates 2026**
 Bengaluru City Corporation Use Case
 
 > *"Digitizing civic governance — one complaint at a time."*

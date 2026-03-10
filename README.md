@@ -128,6 +128,7 @@ npx serve .
 Username: admin
 Password: admin123
 ```
+**GitHub Repo:** [github.com/HowSuyash/Smart-psCRM](https://github.com/HowSuyash/Smart-psCRM)
 
 ---
 

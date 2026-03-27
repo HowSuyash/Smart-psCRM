@@ -1,11 +1,11 @@
 // ===== CONSTANTS =====
 const DEPTS = [
-  { id: 'pwd', name: 'Public Works Dept.', short: 'PWD', cats: ['Road & Infrastructure'], officer: 'Suresh Babu', phone: '080-22223333', color: '#6366f1' },
-  { id: 'water', name: 'Bangalore Water Supply (BWSSB)', short: 'BWSSB', cats: ['Water Supply'], officer: 'Kavitha Rao', phone: '080-22944030', color: '#0ea5e9' },
-  { id: 'bescom', name: 'BESCOM (Electricity)', short: 'BESCOM', cats: ['Electricity'], officer: 'Manjunath K.', phone: '1912', color: '#f59e0b' },
-  { id: 'muni', name: 'BBMP Municipal Corp.', short: 'BBMP', cats: ['Sanitation & Garbage', 'Public Safety', 'Other'], officer: 'Ramesh Naidu', phone: '080-22660000', color: '#10b981' },
-  { id: 'health', name: 'Health Department', short: 'HEALTH', cats: ['Health & Hospitals'], officer: 'Dr. Anitha Sharma', phone: '104', color: '#ec4899' },
-  { id: 'transport', name: 'BMTC Transport', short: 'BMTC', cats: ['Transport & Traffic'], officer: 'Krishna Gowda', phone: '080-22253311', color: '#8b5cf6' },
+  { id: 'pwd', name: 'Public Works Department', short: 'PWD', cats: ['Road & Infrastructure'], officer: 'R. Sharma', phone: '1800-111-555', color: '#6366f1' },
+  { id: 'water', name: 'Jal Jeevan Mission (Water)', short: 'JJM', cats: ['Water Supply'], officer: 'P. Verma', phone: '1800-180-1551', color: '#0ea5e9' },
+  { id: 'electric', name: 'State Electricity Board', short: 'DISCOM', cats: ['Electricity'], officer: 'A. Singh', phone: '1912', color: '#f59e0b' },
+  { id: 'muni', name: 'Municipal Corporation', short: 'MUNI', cats: ['Sanitation & Garbage', 'Public Safety', 'Other'], officer: 'S. Gupta', phone: '1800-200-2222', color: '#10b981' },
+  { id: 'health', name: 'Health Department', short: 'HEALTH', cats: ['Health & Hospitals'], officer: 'Dr. M. Reddy', phone: '104', color: '#ec4899' },
+  { id: 'transport', name: 'Transport Department', short: 'TRANSPORT', cats: ['Transport & Traffic'], officer: 'K. Iyer', phone: '1800-425-4253', color: '#8b5cf6' },
 ];
 
 const PRIORITY_KEYWORDS = {
@@ -14,31 +14,31 @@ const PRIORITY_KEYWORDS = {
   Medium: ['delay', 'slow', 'pending', 'dirty', 'noise', 'garbage', 'damaged'],
 };
 
-// ===== SEED DATA (20 sample complaints) =====
+// ===== SEED DATA (20 sample complaints — pan-India) =====
 function buildSeed() {
   const rows = [
-    ['Ravi Kumar', '9876543210', 'ravi@gmail.com', 'Koramangala 5th Block', 'Road & Infrastructure', 'Large pothole on 80ft road causing accidents to two-wheelers daily', 'High', 'Resolved', 'pwd', 'Suresh Babu', 7, 'Pothole filled and road re-patched'],
-    ['Priya Sharma', '8765432109', 'priya@email.com', 'Indiranagar 100ft Road', 'Water Supply', 'No water supply for 3 consecutive days in our entire apartment block', 'Critical', 'In Progress', 'water', 'Kavitha Rao', 3, 'Pipeline repair team dispatched'],
-    ['Mohan Das', '7654321098', '', 'HSR Layout Sector 3', 'Electricity', 'Frequent power cuts of 4-6 hours every day for the past week', 'High', 'Assigned', 'bescom', 'Manjunath K.', 2, ''],
-    ['Sunita Reddy', '6543210987', 'sunita@mail.com', 'BTM Layout 2nd Stage', 'Sanitation & Garbage', 'Garbage not collected for 5 days, causing stench and stray animals', 'Medium', 'New', null, null, 0, ''],
-    ['Arun Patel', '9988776655', '', 'Whitefield Main Road', 'Road & Infrastructure', 'Road divider broken, vehicles crossing onto wrong lane dangerously', 'Critical', 'In Progress', 'pwd', 'Suresh Babu', 4, 'Survey done, repair materials ordered'],
-    ['Lakshmi Devi', '8877665544', 'lakshmi@mail.com', 'Marathahalli Bridge', 'Water Supply', 'Waterlogging after rain, knee-deep water blocks entry to houses', 'High', 'Triaged', 'water', 'Kavitha Rao', 3, ''],
-    ['Rajesh Kumar', '9765432109', '', 'Jayanagar 4th Block', 'Electricity', 'Street lights not working on 3 roads for over 2 weeks now', 'Low', 'Resolved', 'bescom', 'Manjunath K.', 6, 'Bulbs replaced, lights restored'],
-    ['Meena Iyer', '8654321098', 'meena@email.com', 'Rajajinagar 3rd Block', 'Sanitation & Garbage', 'Sewage overflow onto public road, extremely unhygienic conditions', 'High', 'Resolved', 'muni', 'Ramesh Naidu', 8, 'Sewage cleared and road sanitized'],
-    ['Venkat Rao', '7543210987', '', 'Yeshwanthpur Market', 'Health & Hospitals', 'Govt hospital staff very rude, refused to treat emergency patient', 'Medium', 'Closed', 'health', 'Dr. Anitha Sharma', 9, 'Staff counselled, action taken'],
-    ['Deepa Nair', '9832167540', 'deepa@mail.com', 'Electronic City Phase 1', 'Transport & Traffic', 'Route 365 bus cancelled without notice for 4 days', 'Medium', 'New', null, null, 0, ''],
-    ['Santosh B.', '8721065430', '', 'MG Road Pedestrian Walk', 'Road & Infrastructure', 'Broken footpath tiles causing falls especially for elderly walkers', 'Medium', 'Assigned', 'pwd', 'Suresh Babu', 2, ''],
-    ['Kiran Shah', '7610954320', 'kiran@mail.com', 'Basavanagudi Main Road', 'Water Supply', 'Water meter showing wrong reading, bill tripled without reason', 'Low', 'Resolved', 'water', 'Kavitha Rao', 5, 'Meter replaced, bill corrected'],
-    ['Ananya Gopal', '9500843210', '', 'Hebbal Lake Area', 'Health & Hospitals', 'Stagnant water breeding mosquitoes, dengue cases rising in area', 'Critical', 'In Progress', 'health', 'Dr. Anitha Sharma', 2, 'Fumigation team deployed'],
-    ['Bhaskar Reddy', '8390732100', 'bhaskar@mail.com', 'Outer Ring Road KR Puram', 'Road & Infrastructure', 'Road under construction blocking entire lane for 3 months with no update', 'High', 'Triaged', 'pwd', 'Suresh Babu', 1, ''],
-    ['Geetha M.', '7280621000', '', 'Sadashivanagar', 'Public Safety', 'Large tree fallen on road after storm, blocking traffic completely', 'Critical', 'Resolved', 'muni', 'Ramesh Naidu', 3, 'Tree removed, road cleared'],
-    ['Harish N.', '9170510900', 'harish@mail.com', 'Devanahalli Town', 'Electricity', 'No street lights for entire ward for over 3 weeks', 'Medium', 'New', null, null, 1, ''],
-    ['Indira K.', '8060400800', '', 'Yelahanka New Town', 'Water Supply', 'Main drinking water pipeline leaking at junction, wastage & contamination', 'High', 'In Progress', 'water', 'Kavitha Rao', 2, 'Leak identified, repair in progress'],
-    ['Jagadish T.', '7950290700', 'jagadish@mail.com', 'Shivajinagar Bus Stand', 'Sanitation & Garbage', 'Public toilets extremely dirty, no cleaning staff for weeks', 'High', 'Assigned', 'muni', 'Ramesh Naidu', 1, ''],
-    ['Kavya P.', '9840180600', '', 'Silk Board Junction', 'Transport & Traffic', 'Traffic signal at main junction not working, causing major accidents', 'Critical', 'Resolved', 'transport', 'Krishna Gowda', 4, 'Signal repaired and restored'],
-    ['Lokesh V.', '8730070500', 'lokesh@mail.com', 'Banashankari 2nd Stage', 'Other', 'Illegal construction blocking public road and drainage', 'Medium', 'Triaged', 'muni', 'Ramesh Naidu', 2, ''],
+    ['Ravi Kumar', '9876543210', 'ravi@gmail.com', 'Connaught Place, New Delhi', 'Road & Infrastructure', 'Large pothole on main road causing accidents to two-wheelers daily', 'High', 'Resolved', 'pwd', 'R. Sharma', 7, 'Pothole filled and road re-patched'],
+    ['Priya Sharma', '8765432109', 'priya@email.com', 'Andheri West, Mumbai', 'Water Supply', 'No water supply for 3 consecutive days in our entire apartment block', 'Critical', 'In Progress', 'water', 'P. Verma', 3, 'Pipeline repair team dispatched'],
+    ['Mohan Das', '7654321098', '', 'Salt Lake, Kolkata', 'Electricity', 'Frequent power cuts of 4-6 hours every day for the past week', 'High', 'Assigned', 'electric', 'A. Singh', 2, ''],
+    ['Sunita Reddy', '6543210987', 'sunita@mail.com', 'Banjara Hills, Hyderabad', 'Sanitation & Garbage', 'Garbage not collected for 5 days, causing stench and stray animals', 'Medium', 'New', null, null, 0, ''],
+    ['Arun Patel', '9988776655', '', 'Satellite Road, Ahmedabad', 'Road & Infrastructure', 'Road divider broken, vehicles crossing onto wrong lane dangerously', 'Critical', 'In Progress', 'pwd', 'R. Sharma', 4, 'Survey done, repair materials ordered'],
+    ['Lakshmi Devi', '8877665544', 'lakshmi@mail.com', 'Anna Nagar, Chennai', 'Water Supply', 'Waterlogging after rain, knee-deep water blocks entry to houses', 'High', 'Triaged', 'water', 'P. Verma', 3, ''],
+    ['Rajesh Kumar', '9765432109', '', 'Civil Lines, Jaipur', 'Electricity', 'Street lights not working on 3 roads for over 2 weeks now', 'Low', 'Resolved', 'electric', 'A. Singh', 6, 'Bulbs replaced, lights restored'],
+    ['Meena Iyer', '8654321098', 'meena@email.com', 'Kothrud, Pune', 'Sanitation & Garbage', 'Sewage overflow onto public road, extremely unhygienic conditions', 'High', 'Resolved', 'muni', 'S. Gupta', 8, 'Sewage cleared and road sanitized'],
+    ['Venkat Rao', '7543210987', '', 'Malviya Nagar, Jaipur', 'Health & Hospitals', 'Govt hospital staff very rude, refused to treat emergency patient', 'Medium', 'Closed', 'health', 'Dr. M. Reddy', 9, 'Staff counselled, action taken'],
+    ['Deepa Nair', '9832167540', 'deepa@mail.com', 'MG Road, Kochi', 'Transport & Traffic', 'State bus service cancelled without notice for 4 days', 'Medium', 'New', null, null, 0, ''],
+    ['Santosh B.', '8721065430', '', 'Ashram Road, Ahmedabad', 'Road & Infrastructure', 'Broken footpath tiles causing falls especially for elderly walkers', 'Medium', 'Assigned', 'pwd', 'R. Sharma', 2, ''],
+    ['Kiran Shah', '7610954320', 'kiran@mail.com', 'Dadar, Mumbai', 'Water Supply', 'Water meter showing wrong reading, bill tripled without reason', 'Low', 'Resolved', 'water', 'P. Verma', 5, 'Meter replaced, bill corrected'],
+    ['Ananya Gopal', '9500843210', '', 'Kasturba Nagar, Chennai', 'Health & Hospitals', 'Stagnant water breeding mosquitoes, dengue cases rising in area', 'Critical', 'In Progress', 'health', 'Dr. M. Reddy', 2, 'Fumigation team deployed'],
+    ['Bhaskar Reddy', '8390732100', 'bhaskar@mail.com', 'Jubilee Hills, Hyderabad', 'Road & Infrastructure', 'Road under construction blocking entire lane for 3 months with no update', 'High', 'Triaged', 'pwd', 'R. Sharma', 1, ''],
+    ['Geetha M.', '7280621000', '', 'Vasant Kunj, New Delhi', 'Public Safety', 'Large tree fallen on road after storm, blocking traffic completely', 'Critical', 'Resolved', 'muni', 'S. Gupta', 3, 'Tree removed, road cleared'],
+    ['Harish N.', '9170510900', 'harish@mail.com', 'Pimpri, Pune', 'Electricity', 'No street lights for entire ward for over 3 weeks', 'Medium', 'New', null, null, 1, ''],
+    ['Indira K.', '8060400800', '', 'Sector 14, Gurugram', 'Water Supply', 'Main drinking water pipeline leaking at junction, wastage & contamination', 'High', 'In Progress', 'water', 'P. Verma', 2, 'Leak identified, repair in progress'],
+    ['Jagadish T.', '7950290700', 'jagadish@mail.com', 'Shivaji Nagar, Nagpur', 'Sanitation & Garbage', 'Public toilets extremely dirty, no cleaning staff for weeks', 'High', 'Assigned', 'muni', 'S. Gupta', 1, ''],
+    ['Kavya P.', '9840180600', '', 'Silk Board Junction, Bengaluru', 'Transport & Traffic', 'Traffic signal at main junction not working, causing major accidents', 'Critical', 'Resolved', 'transport', 'K. Iyer', 4, 'Signal repaired and restored'],
+    ['Lokesh V.', '8730070500', 'lokesh@mail.com', 'Dwarka Sector 6, New Delhi', 'Other', 'Illegal construction blocking public road and drainage', 'Medium', 'Triaged', 'muni', 'S. Gupta', 2, ''],
   ];
-  const now = new Date('2026-03-06');
+  const now = new Date('2026-03-20');
   return rows.map((r, i) => {
     const [name, phone, email, location, category, description, priority, status, deptId, officer, daysAgo, remarks] = r;
     const created = new Date(now); created.setDate(now.getDate() - daysAgo);
@@ -48,7 +48,7 @@ function buildSeed() {
       name, phone, email, location, category, description, priority, status,
       deptId: deptId || null, officer: officer || null, remarks: remarks || '',
       createdAt: created.toISOString(), resolvedAt: resolved,
-      updatedAt: created.toISOString(), slaHours: 48,
+      updatedAt: created.toISOString(), slaHours: 48, rating: null,
     };
   });
 }
@@ -104,7 +104,7 @@ function $(id) { return document.getElementById(id); }
 
 // ===== NAVIGATION =====
 function showView(name) {
-  ['landing', 'citizen', 'admin-login', 'admin'].forEach(v => {
+  ['landing', 'citizen', 'admin-login', 'admin', 'public'].forEach(v => {
     const el = $('view-' + v);
     if (el) el.style.display = 'none';
   });
@@ -132,7 +132,7 @@ function destroyChart(id) {
 }
 
 function switchAdminTab(tab) {
-  ['dashboard', 'complaints', 'analytics', 'workflow', 'departments'].forEach(t => {
+  ['dashboard', 'complaints', 'analytics', 'workflow', 'departments', 'heatmap'].forEach(t => {
     const el = $('admin-tab-' + t); if (el) el.style.display = 'none';
     const btn = $('sb-' + t); if (btn) btn.classList.remove('active');
   });
@@ -143,6 +143,7 @@ function switchAdminTab(tab) {
   if (tab === 'analytics') setTimeout(renderAnalytics, 50);
   if (tab === 'workflow') renderWorkflow();
   if (tab === 'departments') renderDepartments();
+  if (tab === 'heatmap') renderHeatmap();
 }
 
 // ===== COUNTER ANIMATION =====
@@ -229,9 +230,23 @@ function step2Next() {
   data.unshift(complaint);
   saveData(data);
   $('ticket-display').textContent = complaint.id;
+  lastTicketId = complaint.id;
   showFormStep(3);
+  // Generate QR code for this complaint
+  generateQRCode('citizen-qr', complaint.id);
+  // Feature 3: show AI prediction on success screen
+  const predHrs = getPredictedHours(complaint.category, complaint.priority);
+  const predBox = $('prediction-box');
+  if (predBox) predBox.innerHTML = `<div style="margin-top:14px;padding:12px 18px;background:linear-gradient(135deg,rgba(99,102,241,0.12),rgba(0,207,255,0.12));border:1px solid rgba(99,102,241,0.3);border-radius:10px;text-align:center">
+    <div style="font-size:0.78rem;color:var(--mid);font-weight:600;margin-bottom:4px">🤖 AI PREDICTION</div>
+    <div style="font-size:1.5rem;font-weight:900;color:var(--primary)">${predHrs}h</div>
+    <div style="font-size:0.78rem;color:var(--mid)">Expected resolution for ${complaint.priority} priority ${complaint.category}</div>
+  </div>`;
   showToast('Complaint submitted successfully!');
+  // Gemini AI triage in background
+  geminiTriage(desc, cat, complaint.id);
 }
+
 
 function newComplaint() {
   ['c-name', 'c-phone', 'c-email', 'c-location', 'c-desc'].forEach(id => { const el = $(id); if (el) el.value = ''; });
@@ -270,10 +285,11 @@ function buildTrackResultHTML(c) {
     const done = i < curIdx, active = i === curIdx;
     return `<div class="tl-item">
       <div class="tl-dot ${done ? 'done' : active ? 'active' : 'pending'}"></div>
-      <div><div class="tl-label" style="color:${done ? 'var(--success)' : active ? 'var(--primary)' : 'var(--muted)'}">${s}</div>
+      <div><div class="tl-label" style="color:${done ? 'var(--success)' : active ? 'var(--primary)' : 'var(--muted)'}"><br>${s}</div>
       <div class="tl-date">${done || active ? fmtDate(c.updatedAt) : 'Pending'}</div></div>
     </div>`;
   }).join('');
+  const hrs = getPredictedHours(c.category, c.priority);
   return `<div style="padding:24px;background:var(--card);border:1px solid var(--border);border-radius:var(--r)">
     <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px;margin-bottom:20px">
       <div>
@@ -296,6 +312,12 @@ function buildTrackResultHTML(c) {
     <div style="font-size:0.875rem;color:var(--mid);margin-bottom:20px;padding:12px;background:rgba(255,255,255,0.03);border-radius:8px">${c.description}</div>
     ${c.remarks ? `<div style="font-size:0.85rem;color:var(--mid);padding:10px 14px;background:rgba(16,185,129,0.07);border:1px solid rgba(16,185,129,0.2);border-radius:8px;margin-bottom:20px">💬 Official Remarks: <strong style="color:var(--text)">${c.remarks}</strong></div>` : ''}
     <div><div style="font-size:0.82rem;font-weight:600;color:var(--mid);margin-bottom:12px;text-transform:uppercase;letter-spacing:0.5px">Progress Timeline</div>${tlHTML}</div>
+    <div style="margin-top:14px;padding:12px 18px;background:linear-gradient(135deg,rgba(99,102,241,0.12),rgba(0,207,255,0.12));border:1px solid rgba(99,102,241,0.3);border-radius:10px;text-align:center">
+      <div style="font-size:0.78rem;color:var(--mid);font-weight:600;margin-bottom:4px">🤖 AI PREDICTED RESOLUTION TIME</div>
+      <div style="font-size:1.4rem;font-weight:900;color:var(--primary)">${hrs}h</div>
+      <div style="font-size:0.78rem;color:var(--mid)">Based on similar ${c.priority} priority ${c.category} cases</div>
+    </div>
+    ${buildRatingHTML(c)}
   </div>`;
 }
 
@@ -635,6 +657,368 @@ function init() {
 
 document.addEventListener('DOMContentLoaded', init);
 
+// ===== FEATURE 1: AREA HEATMAP =====
+const HEATMAP_AREAS = [
+  'New Delhi', 'Mumbai', 'Kolkata', 'Chennai', 'Hyderabad',
+  'Bengaluru', 'Pune', 'Ahmedabad', 'Jaipur', 'Lucknow',
+  'Surat', 'Nagpur', 'Kochi', 'Gurugram', 'Indore',
+  'Bhopal', 'Patna', 'Chandigarh', 'Visakhapatnam', 'Coimbatore',
+  'Vadodara', 'Agra', 'Varanasi', 'Ludhiana', 'Nashik',
+];
+
+function renderHeatmap() {
+  const data = getData();
+  const areaCount = {};
+  HEATMAP_AREAS.forEach(a => areaCount[a] = 0);
+  data.forEach(c => {
+    const matched = HEATMAP_AREAS.find(a => c.location.toLowerCase().includes(a.toLowerCase().split(' ')[0]));
+    if (matched) areaCount[matched] = (areaCount[matched] || 0) + 1;
+    else {
+      const key = c.location.split(',').pop()?.trim() || c.location.split(' ')[0];
+      areaCount[key] = (areaCount[key] || 0) + 1;
+    }
+  });
+  const maxCount = Math.max(...Object.values(areaCount), 1);
+  const sorted = Object.entries(areaCount).sort((a, b) => b[1] - a[1]);
+  const totalComplaints = data.length;
+  const totalCities = sorted.filter(([, v]) => v > 0).length;
+  $('heatmap-summary').innerHTML = `
+    <div style="display:flex;gap:24px;flex-wrap:wrap;margin-bottom:18px">
+      <div class="stat-card" style="padding:14px 22px;flex:1;min-width:160px">
+        <div class="sc-label">Total Complaints</div>
+        <div class="sc-value" style="color:var(--primary)">${totalComplaints}</div>
+      </div>
+      <div class="stat-card" style="padding:14px 22px;flex:1;min-width:160px">
+        <div class="sc-label">Cities Affected</div>
+        <div class="sc-value" style="color:var(--warning)">${totalCities}</div>
+      </div>
+      <div class="stat-card" style="padding:14px 22px;flex:1;min-width:160px">
+        <div class="sc-label">Highest Load</div>
+        <div class="sc-value" style="color:var(--danger)">${sorted[0]?.[0] || '—'}</div>
+      </div>
+    </div>`;
+
+  // Render SVG India Map
+  renderIndiaMap(areaCount, maxCount);
+
+  $('heatmap-grid').innerHTML = sorted.slice(0, 25).map(([area, count]) => {
+    const pct = count / maxCount;
+    const heat = pct > 0.7 ? '#ef4444' : pct > 0.4 ? '#f59e0b' : pct > 0.15 ? '#6366f1' : pct > 0 ? '#0ea5e9' : 'rgba(255,255,255,0.06)';
+    const textColor = pct > 0 ? '#fff' : 'var(--muted)';
+    return `<div class="heat-cell" style="background:${heat};opacity:${0.3 + pct * 0.7 + 0.1}" title="${area}: ${count} complaint${count !== 1 ? 's' : ''}" onclick="filterByCity('${area}')">
+      <div class="heat-name">${area}</div>
+      <div class="heat-count" style="color:${textColor}">${count}</div>
+      ${count > 0 ? `<div class="heat-bar"><div style="width:${Math.round(pct * 100)}%;height:100%;background:rgba(255,255,255,0.35);border-radius:2px"></div></div>` : ''}
+    </div>`;
+  }).join('');
+}
+
+// ===== INDIA SVG MAP =====
+const CITY_COORDS = {
+  'New Delhi': [28.61, 77.21],
+  'Mumbai': [19.08, 72.88],
+  'Kolkata': [22.57, 88.36],
+  'Chennai': [13.09, 80.27],
+  'Hyderabad': [17.39, 78.49],
+  'Bengaluru': [12.97, 77.59],
+  'Pune': [18.52, 73.86],
+  'Ahmedabad': [23.03, 72.59],
+  'Jaipur': [26.91, 75.79],
+  'Lucknow': [26.85, 80.95],
+  'Surat': [21.17, 72.83],
+  'Nagpur': [21.15, 79.09],
+  'Kochi': [9.93, 76.26],
+  'Gurugram': [28.46, 77.03],
+  'Indore': [22.72, 75.86],
+  'Bhopal': [23.26, 77.41],
+  'Patna': [25.59, 85.14],
+  'Chandigarh': [30.74, 76.79],
+  'Visakhapatnam': [17.69, 83.22],
+  'Coimbatore': [11.02, 76.97],
+  'Vadodara': [22.31, 73.18],
+  'Agra': [27.18, 78.01],
+  'Varanasi': [25.32, 82.97],
+  'Ludhiana': [30.90, 75.85],
+  'Nashik': [20.00, 73.79],
+};
+
+function renderIndiaMap(areaCount, maxCount) {
+  const W = 500, H = 580;
+  const LAT_MAX = 38, LAT_MIN = 7, LON_MIN = 67, LON_MAX = 98;
+
+  function project(lat, lon) {
+    const x = ((lon - LON_MIN) / (LON_MAX - LON_MIN)) * W;
+    const y = ((LAT_MAX - lat) / (LAT_MAX - LAT_MIN)) * H;
+    return [Math.round(x), Math.round(y)];
+  }
+
+  // Official India composite boundary – datameet/maps/india-composite.geojson
+  // Includes full J&K (India's claimed territory). 387 pts, lon 67-98, lat 7-38.
+  const INDIA_MAIN = "169.7,47.0 176.0,47.5 191.2,37.9 199.1,37.6 203.0,39.6 204.9,44.2 209.6,44.8 210.4,48.1 212.9,45.4 216.4,47.3 210.9,61.6 206.2,63.1 206.4,65.9 201.8,66.3 203.4,70.2 200.1,74.8 191.7,75.4 195.0,81.6 191.7,82.8 192.8,87.0 195.9,90.1 200.1,89.9 198.9,93.6 202.4,99.6 193.1,106.0 189.4,99.2 183.8,102.4 190.0,112.3 190.0,125.2 195.3,122.5 200.4,130.5 207.6,131.5 213.6,135.5 213.2,138.9 226.3,145.0 215.6,154.3 214.5,164.6 210.9,171.7 218.0,176.8 218.8,174.2 229.2,180.3 230.9,184.6 232.9,184.0 240.1,189.8 243.1,188.5 249.2,193.1 253.4,192.3 253.8,196.4 263.5,199.6 264.3,196.8 272.0,199.3 271.8,197.4 276.6,196.1 284.2,199.5 284.6,204.9 293.4,208.2 293.6,210.3 300.6,208.2 304.0,213.9 306.9,212.0 311.8,212.9 318.4,216.6 323.7,213.5 324.0,216.0 328.0,218.0 336.9,215.4 338.8,217.8 341.7,211.0 338.5,203.7 341.9,191.1 340.6,188.6 349.0,184.9 353.0,189.7 351.0,195.2 353.5,200.4 350.7,203.2 357.0,209.4 361.0,208.4 368.7,211.4 377.0,207.6 382.2,210.1 398.3,209.4 401.5,207.3 404.1,208.7 405.2,200.4 403.5,196.8 397.6,196.8 397.5,191.6 402.1,192.4 407.1,189.2 410.6,191.0 415.0,187.5 414.1,184.4 418.2,183.3 423.5,176.8 435.8,172.3 441.3,168.1 440.2,165.5 445.6,162.8 455.9,167.1 468.6,161.2 472.7,164.9 470.7,167.6 473.0,166.2 478.2,174.1 474.3,177.7 475.8,179.1 475.7,176.9 479.3,175.7 482.6,180.5 489.7,183.3 490.2,186.9 489.7,189.5 482.1,194.3 486.1,204.1 479.1,198.8 471.4,200.6 454.0,213.0 452.6,216.2 454.6,223.3 450.0,232.6 445.7,235.8 447.0,244.5 438.0,264.8 431.5,261.8 427.4,263.0 424.7,260.3 425.6,278.2 423.8,280.6 421.5,279.5 422.6,294.6 417.8,300.5 414.7,296.5 412.9,299.8 407.7,267.2 404.0,268.6 402.5,266.9 402.8,271.5 399.4,274.8 400.6,278.9 397.1,281.8 393.8,275.3 392.7,278.8 389.6,269.0 393.1,259.9 396.6,260.6 399.1,257.3 401.7,259.4 401.9,255.6 405.9,254.1 407.0,245.0 411.2,245.6 410.1,242.7 404.2,239.7 377.9,240.5 368.4,237.8 369.1,225.5 365.9,220.2 364.2,225.1 360.6,224.4 357.3,221.9 356.3,217.1 353.3,216.9 355.7,220.0 349.7,219.7 350.7,218.0 345.1,212.8 344.0,215.4 347.2,217.8 341.6,221.7 340.4,228.0 343.0,228.0 347.4,233.7 351.8,233.4 355.0,238.3 353.6,240.1 345.8,239.3 345.2,244.2 340.9,244.4 338.8,249.4 344.0,254.8 350.6,256.7 351.1,262.3 348.0,264.5 347.7,268.5 351.6,271.3 350.3,275.9 354.8,276.6 352.3,280.5 356.4,296.4 354.6,301.2 356.3,306.3 353.5,306.3 352.6,303.5 352.4,306.5 350.2,305.2 351.3,299.1 349.0,297.9 347.7,302.8 346.1,301.3 346.0,306.6 343.1,304.3 342.7,307.6 342.1,296.6 339.0,295.2 341.8,297.4 335.5,305.1 324.1,308.0 321.2,311.7 319.7,314.8 322.2,321.5 320.4,322.3 323.7,323.4 318.2,326.8 319.2,329.7 317.3,331.3 319.3,330.4 312.4,337.7 299.9,342.0 290.9,348.2 276.2,368.5 267.0,373.7 261.4,382.0 247.5,391.4 246.8,401.2 237.3,405.9 230.1,406.1 225.1,416.9 220.6,413.7 213.9,417.7 210.5,430.1 215.3,462.4 212.3,477.5 205.8,492.4 207.8,518.1 201.0,517.3 198.0,519.3 191.9,533.5 196.6,537.3 181.7,542.2 178.5,554.3 170.3,559.9 161.8,555.0 153.9,544.3 155.9,542.7 153.8,543.7 150.7,535.2 149.5,523.2 143.1,502.8 137.8,491.8 131.8,485.3 126.1,470.5 121.2,444.4 111.5,428.8 109.5,418.1 104.1,410.6 99.9,387.4 101.6,387.4 95.7,370.2 98.4,371.6 98.2,368.2 95.4,367.6 95.3,364.1 96.9,365.4 94.5,361.5 95.7,358.8 97.0,360.8 95.3,357.3 97.9,355.1 96.5,351.9 93.6,357.5 93.3,349.8 95.4,350.1 92.7,346.8 95.0,345.7 92.4,345.6 91.2,339.9 95.7,322.6 92.5,318.3 94.3,317.5 92.0,316.4 93.4,314.7 91.0,316.6 92.6,314.4 90.3,312.4 95.6,305.4 89.3,305.7 92.7,299.8 88.8,299.8 90.2,295.4 95.4,294.4 89.3,293.6 87.3,295.5 85.9,293.6 83.3,300.1 85.6,306.4 82.4,314.4 61.7,323.9 52.1,318.2 31.2,293.7 33.4,290.4 35.9,294.6 51.2,289.2 55.6,281.2 53.9,282.1 51.9,279.6 52.0,281.5 46.7,282.2 43.7,285.5 35.6,283.8 26.3,277.5 27.8,278.1 25.5,276.5 27.1,275.0 23.0,271.2 29.1,264.1 24.4,266.7 23.0,265.3 21.8,269.8 18.9,269.2 21.8,267.0 19.2,267.0 21.9,262.4 28.3,262.5 29.4,256.0 30.1,258.0 31.3,256.3 41.9,256.5 48.9,258.7 57.5,254.0 59.6,257.9 66.4,254.5 64.3,251.8 66.1,249.1 59.1,235.8 59.1,230.1 52.7,229.9 50.0,225.7 51.2,214.2 40.5,210.6 41.7,202.4 54.4,186.9 57.9,186.9 62.1,192.6 79.0,187.8 86.3,173.4 95.9,167.9 103.1,150.8 112.5,146.0 111.8,140.5 124.1,129.6 121.1,128.5 123.5,123.0 120.8,117.6 122.7,114.3 135.1,107.8 130.7,103.3 123.9,103.1 124.3,96.5 118.9,97.9 107.0,91.8 103.8,64.9 107.4,64.3 115.0,53.9 108.9,52.0 109.4,46.3 103.3,46.2 98.8,42.7 99.7,40.0 89.8,40.2 89.5,33.1 97.3,27.4 97.8,24.4 110.7,23.9 107.3,20.3 113.6,21.8 124.0,16.9 127.5,19.8 131.4,18.1 135.8,19.5 136.5,23.8 140.9,23.3 145.6,29.2 156.8,34.4 157.7,39.1 168.9,43.9 169.7,47.0";
+  const outline = INDIA_MAIN;
+
+
+
+
+
+
+
+  // Build city bubbles
+  const bubbles = Object.entries(CITY_COORDS).map(([city, [lat, lon]]) => {
+    const count = areaCount[city] || 0;
+    const pct = count / maxCount;
+    const [cx, cy] = project(lat, lon);
+    const r = count > 0 ? Math.max(8, Math.min(28, 6 + pct * 24)) : 5;
+    const fill = pct > 0.7 ? '#ef4444' : pct > 0.4 ? '#f59e0b' : pct > 0.15 ? '#6366f1' : pct > 0 ? '#00cfff' : 'rgba(255,255,255,0.12)';
+    const stroke = pct > 0 ? fill : 'rgba(255,255,255,0.18)';
+    const glow = pct > 0 ? `filter:drop-shadow(0 0 ${Math.round(r * 0.8)}px ${fill}88)` : '';
+    return `
+      <g onclick="filterByCity('${city}')" style="cursor:pointer" class="map-city-g">
+        <title>${city}: ${count} complaint${count !== 1 ? 's' : ''}</title>
+        <circle cx="${cx}" cy="${cy}" r="${r + 4}" fill="${fill}" opacity="0.15"/>
+        <circle cx="${cx}" cy="${cy}" r="${r}" fill="${fill}" opacity="${count > 0 ? 0.9 : 0.25}" stroke="${stroke}" stroke-width="1.5" style="${glow}"/>
+        ${count > 0 ? `<text x="${cx}" y="${cy + 4}" text-anchor="middle" font-size="${count > 9 ? 9 : 10}" font-weight="700" fill="#fff" pointer-events="none">${count}</text>` : ''}
+        ${count > 0 ? `<text x="${cx}" y="${cy + r + 13}" text-anchor="middle" font-size="8.5" fill="rgba(255,255,255,0.75)" pointer-events="none">${city.split(' ')[0]}</text>` : ''}
+      </g>`;
+  }).join('');
+
+  const svg = `
+    <svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg"
+      style="width:100%;display:block">
+
+      <defs>
+        <radialGradient id="mapBg" cx="50%" cy="50%" r="60%">
+          <stop offset="0%" stop-color="rgba(0,207,255,0.04)"/>
+          <stop offset="100%" stop-color="rgba(0,0,0,0)"/>
+        </radialGradient>
+      </defs>
+      <rect width="${W}" height="${H}" fill="url(#mapBg)" rx="14"/>
+      <!-- India mainland outline -->
+      <polygon points="${INDIA_MAIN}"
+        fill="rgba(99,102,241,0.10)" stroke="rgba(99,102,241,0.5)" stroke-width="1.5" stroke-linejoin="round"/>
+
+      <!-- City bubbles -->
+      ${bubbles}
+      <!-- Legend -->
+      <g transform="translate(14,${H - 60})">
+        <rect width="160" height="52" rx="8" fill="rgba(12,21,37,0.85)" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+        <circle cx="18" cy="14" r="6" fill="#ef4444" opacity="0.9"/>
+        <text x="30" y="18" font-size="9" fill="#ccc">High (≥70%)</text>
+        <circle cx="18" cy="30" r="6" fill="#f59e0b" opacity="0.9"/>
+        <text x="30" y="34" font-size="9" fill="#ccc">Medium (40–70%)</text>
+        <circle cx="90" cy="14" r="6" fill="#6366f1" opacity="0.9"/>
+        <text x="102" y="18" font-size="9" fill="#ccc">Low (&lt;40%)</text>
+        <circle cx="90" cy="30" r="6" fill="#00cfff" opacity="0.9"/>
+        <text x="102" y="34" font-size="9" fill="#ccc">Minimal</text>
+      </g>
+      <text x="${W / 2}" y="${H - 8}" text-anchor="middle" font-size="9" fill="rgba(255,255,255,0.3)">Click any city to filter complaints</text>
+    </svg>`;
+
+  const mapEl = $('india-map-svg');
+  if (mapEl) mapEl.innerHTML = svg;
+}
+
+
+
+function filterByCity(city) {
+  switchAdminTab('complaints');
+  const search = $('f-search');
+  if (search) { search.value = city; renderComplaintsTable(); }
+  showToast(`Showing complaints from: ${city}`, 'info');
+}
+
+// ===== FEATURE 2: CITIZEN SATISFACTION RATING =====
+function submitRating(ticketId, stars) {
+  const data = getData();
+  const idx = data.findIndex(c => c.id === ticketId);
+  if (idx < 0) return;
+  data[idx].rating = stars;
+  saveData(data);
+  $('rating-section-' + ticketId).innerHTML = `<div style="margin-top:12px;padding:12px 16px;background:rgba(16,185,129,0.08);border:1px solid rgba(16,185,129,0.2);border-radius:10px;text-align:center">
+    <span style="font-size:1.4rem">${'⭐'.repeat(stars)}</span>
+    <div style="font-size:0.82rem;color:var(--success);margin-top:4px;font-weight:600">Thank you for your feedback!</div>
+  </div>`;
+  showToast('⭐ Rating submitted — thank you!', 'success');
+}
+
+function buildRatingHTML(c) {
+  if (c.status !== 'Resolved' && c.status !== 'Closed') return '';
+  if (c.rating) {
+    return `<div style="margin-top:14px;padding:12px 16px;background:rgba(16,185,129,0.08);border:1px solid rgba(16,185,129,0.2);border-radius:10px;text-align:center">
+      <div style="font-size:0.78rem;color:var(--mid);font-weight:600;margin-bottom:4px">YOUR RATING</div>
+      <span style="font-size:1.4rem">${'⭐'.repeat(c.rating)}</span>
+    </div>`;
+  }
+  return `<div id="rating-section-${c.id}" style="margin-top:14px;padding:14px 16px;background:rgba(0,207,255,0.06);border:1px solid rgba(0,207,255,0.15);border-radius:10px">
+    <div style="font-size:0.82rem;color:var(--mid);font-weight:600;margin-bottom:10px;text-align:center">⭐ Rate your experience (Complaint Resolved)</div>
+    <div style="display:flex;justify-content:center;gap:10px">
+      ${[1, 2, 3, 4, 5].map(s => `<button onclick="submitRating('${c.id}',${s})" style="background:none;border:none;font-size:1.7rem;cursor:pointer;transition:transform 0.15s" onmouseover="this.style.transform='scale(1.3)'" onmouseout="this.style.transform='scale(1)'">☆</button>`).join('')}
+    </div>
+  </div>`;
+}
+
+// ===== FEATURE 3: PREDICTIVE AI RESOLUTION TIME =====
+function getPredictedHours(category, priority) {
+  const base = { 'Road & Infrastructure': 36, 'Water Supply': 28, 'Electricity': 20, 'Sanitation & Garbage': 32, 'Health & Hospitals': 18, 'Transport & Traffic': 24, 'Public Safety': 16, 'Other': 40 };
+  const mult = { Critical: 0.5, High: 0.75, Medium: 1.0, Low: 1.4 };
+  const hrs = Math.round((base[category] || 30) * (mult[priority] || 1));
+  return hrs;
+}
+
+function showPrediction(complaintId) {
+  const data = getData();
+  const c = data.find(x => x.id === complaintId);
+  if (!c) return;
+  const hrs = getPredictedHours(c.category, c.priority);
+  const el = $('prediction-box');
+  if (el) el.innerHTML = `<div style="margin-top:14px;padding:12px 18px;background:linear-gradient(135deg,rgba(99,102,241,0.12),rgba(0,207,255,0.12));border:1px solid rgba(99,102,241,0.3);border-radius:10px;text-align:center">
+    <div style="font-size:0.78rem;color:var(--mid);font-weight:600;margin-bottom:4px">🤖 AI PREDICTION</div>
+    <div style="font-size:1.5rem;font-weight:900;color:var(--primary)">${hrs}h</div>
+    <div style="font-size:0.78rem;color:var(--mid)">Expected resolution for ${c.priority} priority</div>
+  </div>`;
+}
+
+// ===== FEATURE 4: EXPORT CSV =====
+function exportCSV() {
+  const data = getData();
+  const headers = ['Ticket ID', 'Name', 'Phone', 'Email', 'Location', 'Category', 'Priority', 'Status', 'Department', 'Filed On', 'Resolved On', 'Remarks', 'Rating'];
+  const rows = data.map(c => {
+    const dept = DEPTS.find(d => d.id === c.deptId);
+    return [c.id, c.name, c.phone, c.email || '', c.location, c.category, c.priority, c.status,
+    dept ? dept.name : 'Unassigned', fmtDate(c.createdAt), fmtDate(c.resolvedAt), c.remarks || '', c.rating ? c.rating + ' stars' : ''].map(v => `"${String(v).replace(/"/g, '""')}"`).join(',');
+  });
+  const csv = [headers.join(','), ...rows].join('\n');
+  const blob = new Blob([csv], { type: 'text/csv' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = 'SmartPSCRM_Report_' + new Date().toISOString().slice(0, 10) + '.csv';
+  a.click(); URL.revokeObjectURL(url);
+  showToast('📄 CSV report downloaded!', 'success');
+}
+
+function printReport() {
+  const data = getData();
+  const total = data.length;
+  const resolved = data.filter(c => ['Resolved', 'Closed'].includes(c.status)).length;
+  const rate = total ? Math.round(resolved / total * 100) : 0;
+  const slaBreaches = data.filter(c => !['Resolved', 'Closed'].includes(c.status) && hoursAgo(c.createdAt) > 48).length;
+  const win = window.open('', '_blank');
+  win.document.write(`<!DOCTYPE html><html><head><title>Smart PS-CRM Report</title><style>body{font-family:Arial,sans-serif;padding:30px;color:#111}h1{color:#1a1a2e}table{width:100%;border-collapse:collapse;margin-top:20px;font-size:12px}th{background:#1a1a2e;color:#fff;padding:8px;text-align:left}td{padding:7px 8px;border-bottom:1px solid #eee}.kpi{display:inline-block;margin:0 20px 15px 0;text-align:center}.kpi-val{font-size:2rem;font-weight:900;color:#1a1a2e}.kpi-lbl{font-size:11px;color:#666}</style></head><body>
+    <h1>🏛️ Smart PS-CRM — Complaints Report</h1>
+    <p style="color:#666">India Innovates 2026 | Generated: ${new Date().toLocaleString('en-IN')}</p>
+    <div><span class="kpi"><div class="kpi-val">${total}</div><div class="kpi-lbl">Total Complaints</div></span>
+    <span class="kpi"><div class="kpi-val">${rate}%</div><div class="kpi-lbl">Resolution Rate</div></span>
+    <span class="kpi"><div class="kpi-val">${slaBreaches}</div><div class="kpi-lbl">SLA Breaches</div></span></div>
+    <table><tr><th>Ticket ID</th><th>Name</th><th>Location</th><th>Category</th><th>Priority</th><th>Status</th><th>Department</th><th>Filed</th></tr>
+    ${data.map(c => { const dept = DEPTS.find(d => d.id === c.deptId); return `<tr><td><b>${c.id}</b></td><td>${c.name}</td><td>${c.location}</td><td>${c.category}</td><td>${c.priority}</td><td>${c.status}</td><td>${dept ? dept.short : '—'}</td><td>${fmtDate(c.createdAt)}</td></tr>`; }).join('')}
+    </table></body></html>`);
+  win.document.close(); win.print();
+}
+
+// ===== FEATURE 5: PUBLIC TRANSPARENCY DASHBOARD =====
+function renderPublicDashboard() {
+  const data = getData();
+  const resolved = data.filter(c => ['Resolved', 'Closed'].includes(c.status));
+  const rate = data.length ? Math.round(resolved.length / data.length * 100) : 0;
+  const avgHrs = resolved.filter(c => c.resolvedAt).reduce((a, c) => a + Math.abs(hoursAgo(c.createdAt) - hoursAgo(c.resolvedAt)), 0) / Math.max(resolved.filter(c => c.resolvedAt).length, 1);
+  const ratings = data.filter(c => c.rating).map(c => c.rating);
+  const avgRating = ratings.length ? (ratings.reduce((a, b) => a + b, 0) / ratings.length).toFixed(1) : 'N/A';
+
+  $('pub-stats').innerHTML = [
+    { label: 'Total Complaints', val: data.length, color: 'var(--primary)', icon: '📋' },
+    { label: 'Resolution Rate', val: rate + '%', color: 'var(--success)', icon: '✅' },
+    { label: 'Avg Resolution', val: Math.round(Math.abs(avgHrs)) + 'h', color: 'var(--warning)', icon: '⏱️' },
+    { label: 'Avg Satisfaction', val: avgRating !== 'N/A' ? avgRating + ' ⭐' : 'N/A', color: '#f59e0b', icon: '⭐' },
+  ].map(s => `<div class="stat-card" style="text-align:center;padding:24px">
+    <div style="font-size:2rem;margin-bottom:8px">${s.icon}</div>
+    <div class="sc-value" style="color:${s.color};font-size:1.8rem">${s.val}</div>
+    <div class="sc-label" style="margin-top:6px">${s.label}</div>
+  </div>`).join('');
+
+  // Dept performance public chart
+  destroyChart('pub-perf');
+  const ctx = $('chart-pub-perf');
+  if (ctx) {
+    chartInstances['pub-perf'] = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: DEPTS.map(d => d.short),
+        datasets: [
+          { label: 'Resolved ✅', data: DEPTS.map(d => data.filter(c => c.deptId === d.id && ['Resolved', 'Closed'].includes(c.status)).length), backgroundColor: 'rgba(16,185,129,0.7)', borderRadius: 6 },
+          { label: 'Pending ⏳', data: DEPTS.map(d => data.filter(c => c.deptId === d.id && !['Resolved', 'Closed'].includes(c.status)).length), backgroundColor: 'rgba(239,68,68,0.5)', borderRadius: 6 },
+        ]
+      },
+      options: { responsive: true, plugins: { legend: { labels: { color: '#8892a4' } } }, scales: { y: { beginAtZero: true, grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#8892a4' } }, x: { grid: { display: false }, ticks: { color: '#8892a4' } } } }
+    });
+  }
+
+  // Recent resolutions (anonymized)
+  const recent = data.filter(c => ['Resolved', 'Closed'].includes(c.status)).slice(0, 6);
+  $('pub-feed').innerHTML = recent.length ? recent.map(c => {
+    const dept = DEPTS.find(d => d.id === c.deptId);
+    const city = c.location.split(',').pop()?.trim() || c.location;
+    return `<div style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.05)">
+      <span style="font-size:1.3rem">✅</span>
+      <div style="flex:1">
+        <div style="font-size:0.9rem;font-weight:600">${city} — ${c.category}</div>
+        <div style="font-size:0.75rem;color:var(--mid)">${dept ? dept.name : 'Dept.'} · Resolved in ~${getPredictedHours(c.category, c.priority)}h</div>
+      </div>
+      <span class="badge badge-Resolved" style="font-size:0.7rem">Resolved</span>
+    </div>`;
+  }).join('') : '<div class="empty-state">No resolved complaints yet</div>';
+}
+
+// ===== FEATURE 6: GUIDED DEMO TOUR =====
+const TOUR_STEPS = [
+  { title: '🏛️ Welcome to Smart PS-CRM', body: 'A pan-India civic grievance platform — 100% offline, AI-assisted, zero backend.', action: () => showView('landing'), highlight: null },
+  { title: '📝 Step 1: File a Complaint', body: 'Citizens can file complaints in 3 easy steps. AI auto-detects priority!', action: () => showView('citizen'), highlight: 'citizen-submit' },
+  { title: '🔍 Step 2: Track Your Ticket', body: 'Using just their Ticket ID, citizens track every status update — no login needed.', action: () => switchCitizenTab('track'), highlight: 'citizen-track' },
+  { title: '🏛️ Step 3: Admin Command Center', body: 'Admins manage all complaints, assign departments, and monitor SLA breaches.', action: () => { localStorage.setItem('pscrm_admin', '1'); showView('admin'); switchAdminTab('dashboard'); }, highlight: 'admin-tab-dashboard' },
+  { title: '📈 Analytics Dashboard', body: 'Real-time charts: complaint trends, category split, dept performance.', action: () => switchAdminTab('analytics'), highlight: 'admin-tab-analytics' },
+  { title: '⚡ Workflow Kanban', body: 'Visual pipeline of complaints: New → Triaged → Assigned → In Progress → Resolved.', action: () => switchAdminTab('workflow'), highlight: 'admin-tab-workflow' },
+  { title: '🗺️ Area Heatmap', body: 'See which cities have the most complaints — pan-India live heatmap!', action: () => switchAdminTab('heatmap'), highlight: 'admin-tab-heatmap' },
+  { title: '🌐 Public Transparency', body: 'Any citizen can see live resolution stats — building govt accountability.', action: () => { localStorage.removeItem('pscrm_admin'); showView('public'); renderPublicDashboard(); }, highlight: 'view-public' },
+  { title: '🎉 Tour Complete!', body: 'Smart PS-CRM — Digitizing civic governance, one complaint at a time. 🇮🇳', action: () => showView('landing'), highlight: null },
+];
+
+let tourActive = false;
+let tourStep = 0;
+
+function startTour() {
+  tourActive = true;
+  tourStep = 0;
+  $('tour-overlay').style.display = 'flex';
+  runTourStep();
+}
+
+function runTourStep() {
+  const step = TOUR_STEPS[tourStep];
+  if (!step) { endTour(); return; }
+  if (step.action) step.action();
+  $('tour-title').textContent = step.title;
+  $('tour-body').textContent = step.body;
+  $('tour-progress').textContent = `${tourStep + 1} / ${TOUR_STEPS.length}`;
+  $('tour-prev').style.display = tourStep > 0 ? '' : 'none';
+  $('tour-next').textContent = tourStep === TOUR_STEPS.length - 1 ? 'Finish 🎉' : 'Next →';
+}
+
+function tourNext() {
+  if (tourStep >= TOUR_STEPS.length - 1) { endTour(); return; }
+  tourStep++; runTourStep();
+}
+
+function tourPrev() {
+  if (tourStep > 0) { tourStep--; runTourStep(); }
+}
+
+function endTour() {
+  tourActive = false;
+  $('tour-overlay').style.display = 'none';
+  localStorage.removeItem('pscrm_admin');
+  showView('landing');
+  showToast('Tour complete! Explore on your own 🚀', 'success');
+}
+
 // ===== LANGUAGE SYSTEM =====
 const TRANSLATIONS = {
   en: {
@@ -675,7 +1059,7 @@ const TRANSLATIONS = {
     btn_track_ticket: '🔍 Track This Ticket', btn_file_another: '+ File Another', btn_home: 'Home',
     track_h: 'Track Your Complaint', track_p: 'Enter the Ticket ID you received on submission', ph_track: 'e.g. PSC-0042', btn_track: 'Track →',
     // Admin Login
-    login_h: 'Admin Command Center', login_p: 'Smart PS-CRM — Bengaluru City Corporation',
+    login_h: 'Admin Command Center', login_p: 'Smart PS-CRM — Civic Grievance Command Center',
     login_user: 'Username', login_pass: 'Password', login_btn: 'Login to Dashboard',
     login_demo: 'Demo credentials: admin / admin123', login_back: '← Back to Home',
     // Admin Sidebar
@@ -914,7 +1298,7 @@ Once logged in, you can manage complaints, view analytics, assign departments, a
   {
     patterns: [/what.*crm|about|purpose|what is|smart ps|platform|help/i],
     en: `🏛️ <b>About Smart PS-CRM:</b><br>
-Smart PS-CRM is a <b>Citizen Grievance Command Center</b> for Bengaluru City Corporation.<br><br>
+Smart PS-CRM is a <b>Citizen Grievance Command Center</b> for civic governance across India.<br><br>
 It bridges citizens & government by:<br>
 ✅ Automating complaint routing<br>
 ✅ Providing real-time tracking<br>

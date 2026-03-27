@@ -8,6 +8,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
     rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
   <style>
     :root {
       --bg: #060d1b;
@@ -1840,6 +1841,196 @@
         right: 16px
       }
     }
+
+    /* ===== HEATMAP ===== */
+    .heat-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 10px;
+      margin-top: 16px
+    }
+
+    .heat-cell {
+      border-radius: 10px;
+      padding: 12px 8px;
+      text-align: center;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+      position: relative;
+      overflow: hidden
+    }
+
+    .heat-cell:hover {
+      transform: scale(1.06);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4)
+    }
+
+    .heat-name {
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 4px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis
+    }
+
+    .heat-count {
+      font-size: 1.3rem;
+      font-weight: 900
+    }
+
+    .heat-bar {
+      height: 3px;
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 2px;
+      margin-top: 4px;
+      overflow: hidden
+    }
+
+    /* ===== TOUR OVERLAY ===== */
+    #tour-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 99998;
+      pointer-events: none;
+      display: none;
+      align-items: flex-end;
+      justify-content: center;
+      padding-bottom: 40px
+    }
+
+    #tour-overlay.active {
+      display: flex
+    }
+
+    #tour-card {
+      pointer-events: all;
+      background: rgba(12, 21, 37, 0.97);
+      border: 1px solid rgba(0, 207, 255, 0.35);
+      border-radius: 20px;
+      padding: 24px 28px;
+      max-width: 480px;
+      width: 90%;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(0, 207, 255, 0.1);
+      backdrop-filter: blur(20px);
+      animation: fadeIn 0.25s ease
+    }
+
+    #tour-card h3 {
+      font-size: 1.1rem;
+      font-weight: 800;
+      margin-bottom: 8px;
+      color: var(--primary)
+    }
+
+    #tour-card p {
+      font-size: 0.875rem;
+      color: var(--mid);
+      line-height: 1.6;
+      margin-bottom: 16px
+    }
+
+    .tour-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px
+    }
+
+    #tour-progress {
+      font-size: 0.75rem;
+      color: var(--muted);
+      font-weight: 600;
+      margin-left: auto
+    }
+
+    /* Start Tour FAB */
+    #tour-fab {
+      position: fixed;
+      bottom: 24px;
+      left: 24px;
+      z-index: 9990;
+      background: linear-gradient(135deg, #f59e0b, #ec4899);
+      border: none;
+      border-radius: 30px;
+      color: #fff;
+      font-size: 0.85rem;
+      font-weight: 700;
+      padding: 12px 20px;
+      cursor: pointer;
+      box-shadow: 0 4px 20px rgba(245, 158, 11, 0.4);
+      transition: transform 0.2s, box-shadow 0.2s;
+      white-space: nowrap
+    }
+
+    #tour-fab:hover {
+      transform: scale(1.05);
+      box-shadow: 0 6px 28px rgba(245, 158, 11, 0.6)
+    }
+
+    /* ===== PUBLIC DASHBOARD ===== */
+    #view-public { min-height: 100vh }
+    .pub-stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 16px; margin-bottom: 24px
+    }
+
+    /* ===== VOICE + AI + QR ===== */
+    .desc-wrap { position: relative }
+    .mic-btn {
+      position: absolute; bottom: 10px; right: 10px;
+      background: linear-gradient(135deg, #6366f1, #00cfff);
+      border: none; border-radius: 50%; width: 38px; height: 38px;
+      color: #fff; font-size: 1.1rem; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 2px 12px rgba(99,102,241,0.4)
+    }
+    .mic-btn:hover { transform: scale(1.1) }
+    .mic-btn.listening {
+      animation: micPulse 0.8s ease-in-out infinite alternate;
+      background: linear-gradient(135deg, #ef4444, #f59e0b)
+    }
+    @keyframes micPulse {
+      from { box-shadow: 0 0 0 0 rgba(239,68,68,0.6) }
+      to   { box-shadow: 0 0 0 12px rgba(239,68,68,0) }
+    }
+    .ai-triage-box {
+      margin-top: 14px; padding: 14px 16px;
+      background: linear-gradient(135deg, rgba(99,102,241,0.1), rgba(0,207,255,0.07));
+      border: 1px solid rgba(99,102,241,0.3); border-radius: 12px;
+      font-size: 0.82rem; animation: fadeIn 0.4s ease
+    }
+    .ai-triage-box .ai-label {
+      font-size: 0.7rem; font-weight: 700; color: #818cf8;
+      text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px
+    }
+    .ai-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 6px }
+    .ai-chip {
+      padding: 4px 12px; border-radius: 999px; font-size: 0.75rem; font-weight: 700;
+      background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.12)
+    }
+    .ai-chip.urgent { border-color: #ef4444; color: #f87171 }
+    .ai-chip.dept   { border-color: #00cfff; color: #00cfff }
+    .ai-chip.cat    { border-color: #a78bfa; color: #a78bfa }
+    .qr-box {
+      margin: 16px auto 0; display: flex; flex-direction: column;
+      align-items: center; gap: 10px
+    }
+    .qr-box canvas, .qr-box img { border-radius: 8px; background: #fff; padding: 8px }
+    .qr-hint { font-size: 0.78rem; color: var(--mid) }
+    .gemini-bar {
+      display: flex; align-items: center; gap: 8px;
+      padding: 4px 8px; background: rgba(99,102,241,0.1);
+      border: 1px solid rgba(99,102,241,0.25); border-radius: 999px;
+      margin-left: auto
+    }
+    .gemini-bar input {
+      background: none; border: none; color: var(--text);
+      font-size: 0.78rem; width: 180px; padding: 2px 4px
+    }
+    .gemini-bar label { font-size: 0.75rem; color: #818cf8; font-weight: 700; white-space: nowrap }
   </style>
 </head>
 
@@ -1851,7 +2042,6 @@
       <span class="brand-icon">🏛️</span>
       <div>
         <span class="brand-name">Smart PS-CRM</span>
-        <span class="brand-sub">Bengaluru City Corporation</span>
       </div>
     </div>
     <div class="nav-links" id="nav-public">
@@ -1859,6 +2049,8 @@
         onclick="showView('citizen')">File Complaint</button>
       <button class="btn-ghost" data-i18n="nav_track" style="font-size:0.85rem;padding:7px 12px"
         onclick="switchCitizenTab('track');showView('citizen')">Track Ticket</button>
+      <button class="btn-ghost" style="font-size:0.85rem;padding:7px 12px"
+        onclick="showView('public');renderPublicDashboard()">🌐 Public Stats</button>
       <button class="btn-primary" data-i18n="nav_admin" style="font-size:0.85rem;padding:7px 14px"
         onclick="showView('admin-login')">Admin Portal</button>
     </div>
@@ -1976,7 +2168,8 @@
       <button class="btn-primary btn-lg" data-i18n="cta_btn" onclick="showView('citizen')">📝 File Your Complaint
         Now</button>
       <p style="margin-top:14px;color:var(--mid);font-size:0.85rem"><span data-i18n="cta_demo">Admin Demo Login:</span>
-        <strong style="color:var(--text)">admin / admin123</strong></p>
+        <strong style="color:var(--text)">admin / admin123</strong>
+      </p>
     </div>
   </section>
 
@@ -2035,12 +2228,14 @@
             </select>
           </div>
           <div class="form-group">
-            <label data-i18n="lbl_desc">Description *</label>
-            <textarea id="c-desc" rows="4" data-i18n-placeholder="ph_desc" placeholder="Describe your issue clearly..."
-              oninput="detectPriorityFromDesc()"></textarea>
-            <div class="priority-detect" id="priority-display" data-i18n="priority_auto">📊 Priority will be
-              auto-detected from your description
+            <label data-i18n="lbl_desc">Description * <span style="color:var(--mid);font-weight:400;font-size:0.78rem">(or tap 🎤 to speak)</span></label>
+            <div class="desc-wrap">
+              <textarea id="c-desc" rows="4" data-i18n-placeholder="ph_desc" placeholder="Describe your issue clearly... or use the mic 🎤"
+                oninput="detectPriorityFromDesc()" style="padding-right:52px"></textarea>
+              <button type="button" class="mic-btn" id="mic-btn" onclick="toggleVoice()" title="Voice input">🎤</button>
             </div>
+            <div class="priority-detect" id="priority-display" data-i18n="priority_auto">📊 Priority auto-detected from description</div>
+            <div id="ai-triage-result"></div>
           </div>
           <div class="form-group">
             <label data-i18n="lbl_photo">Attach Photo (optional)</label>
@@ -2058,10 +2253,16 @@
           <h2 data-i18n="success_h">Complaint Successfully Submitted!</h2>
           <p data-i18n="success_p" style="color:var(--mid);margin-bottom:6px">Your unique Ticket ID is:</p>
           <div class="ticket-id-box" id="ticket-display"></div>
-          <p data-i18n="success_save" style="color:var(--mid);font-size:0.875rem;margin-bottom:24px">📌 Save this ID to
+          <div class="qr-box">
+            <div id="citizen-qr"></div>
+            <span class="qr-hint">📱 Scan QR code anytime to track your complaint</span>
+          </div>
+          <p data-i18n="success_save" style="color:var(--mid);font-size:0.875rem;margin-bottom:16px">📌 Save this ID to
             track your complaint
             anytime</p>
-          <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+          <!-- Feature 3: AI Prediction Box -->
+          <div id="prediction-box"></div>
+          <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:20px">
             <button class="btn-primary" data-i18n="btn_track_ticket" onclick="goTrackTicket()">🔍 Track This
               Ticket</button>
             <button class="btn-outline" data-i18n="btn_file_another" onclick="newComplaint()">+ File Another</button>
@@ -2093,7 +2294,7 @@
       <div class="login-card">
         <div class="login-logo">🏗️</div>
         <h2 data-i18n="login_h">Admin Command Center</h2>
-        <p data-i18n="login_p">Smart PS-CRM — Bengaluru City Corporation</p>
+        <p data-i18n="login_p">Smart PS-CRM — Civic Grievance Command Center</p>
         <div class="form-group"><label data-i18n="login_user">Username</label><input type="text" id="l-user"
             value="admin"></div>
         <div class="form-group"><label data-i18n="login_pass">Password</label><input type="password" id="l-pass"
@@ -2122,6 +2323,8 @@
           Workflow</button>
         <button class="sb-btn" id="sb-departments" data-i18n="sb_departments" onclick="switchAdminTab('departments')">🏢
           Departments</button>
+        <!-- Feature 1: Heatmap sidebar button -->
+        <button class="sb-btn" id="sb-heatmap" onclick="switchAdminTab('heatmap')">🗺️ Heatmap</button>
       </div>
       <div class="sb-footer">
         <div class="admin-user" data-i18n="sb_loggedas">Logged in as</div>
@@ -2159,7 +2362,14 @@
       <div id="admin-tab-complaints" class="admin-tab" style="display:none">
         <div class="tab-header">
           <h1 class="tab-title">All Complaints</h1>
-          <button class="btn-primary" onclick="adminAutoAssign()">⚡ Auto-Assign</button>
+          <div style="display:flex;gap:8px;flex-wrap:wrap">
+            <!-- Feature 4: Export & Print -->
+            <button class="btn-outline" style="font-size:0.82rem;padding:7px 14px" onclick="exportCSV()">📄 Export
+              CSV</button>
+            <button class="btn-ghost" style="font-size:0.82rem;padding:7px 14px" onclick="printReport()">🖨️ Print
+              Report</button>
+            <button class="btn-primary" onclick="adminAutoAssign()">⚡ Auto-Assign</button>
+          </div>
         </div>
         <div class="filter-bar">
           <input type="text" id="f-search" placeholder="🔍 Search name, location, ticket ID..."
@@ -2252,6 +2462,35 @@
         </div>
         <div class="dept-grid" id="dept-cards"></div>
       </div>
+
+      <!-- Feature 1: HEATMAP TAB -->
+      <div id="admin-tab-heatmap" class="admin-tab" style="display:none">
+        <div class="tab-header">
+          <h1 class="tab-title">🗺️ Area Complaint Heatmap</h1>
+          <span style="font-size:0.8rem;color:var(--mid)">Click any city to filter complaints</span>
+        </div>
+        <div id="heatmap-summary"></div>
+        <div class="glass" style="padding:24px">
+          <div class="card-header" style="margin-bottom:20px">
+            <h3>Pan-India Complaint Density Map</h3>
+            <div style="display:flex;gap:10px;font-size:0.75rem;align-items:center;flex-wrap:wrap">
+              <span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#ef4444"></span>
+              High
+              <span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#f59e0b"></span>
+              Medium
+              <span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#6366f1"></span> Low
+              <span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#00cfff"></span>
+              Minimal
+            </div>
+          </div>
+          <!-- SVG India Map + Grid side by side -->
+          <div style="display:grid;grid-template-columns:55% 45%;gap:20px;align-items:start">
+            <div id="india-map-svg" style="background:rgba(0,0,0,0.15);border-radius:12px;overflow:hidden"></div>
+            <div class="heat-grid" id="heatmap-grid"></div>
+          </div>
+
+        </div>
+      </div>
     </main>
   </section>
 
@@ -2268,8 +2507,56 @@
     style="position:fixed;bottom:24px;right:24px;z-index:9999;display:flex;flex-direction:column;gap:8px;pointer-events:none">
   </div>
 
+  <!-- Feature 5: PUBLIC TRANSPARENCY DASHBOARD -->
+  <section id="view-public" class="view" style="display:none">
+    <div class="page-wrap">
+      <div
+        style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:28px">
+        <div>
+          <button class="back-btn" onclick="showView('landing')">← Back to Home</button>
+          <h1 class="page-title" style="margin-bottom:4px">🌐 Public Transparency Dashboard</h1>
+          <p class="page-subtitle">Live civic stats — open to every citizen, no login required</p>
+        </div>
+        <div
+          style="padding:10px 18px;background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.2);border-radius:10px;font-size:0.82rem;color:var(--success);font-weight:600">
+          🔴 Live — Updates in real time
+        </div>
+      </div>
+
+      <div class="pub-stats-grid" id="pub-stats"></div>
+
+      <div class="glass" style="padding:24px;margin-bottom:20px">
+        <h3 style="font-size:0.95rem;font-weight:700;margin-bottom:20px">🏆 Department Performance Leaderboard</h3>
+        <canvas id="chart-pub-perf" height="160"></canvas>
+      </div>
+
+      <div class="glass" style="padding:24px">
+        <h3 style="font-size:0.95rem;font-weight:700;margin-bottom:16px">✅ Recent Resolutions Feed</h3>
+        <div id="pub-feed"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Feature 6: GUIDED DEMO TOUR OVERLAY -->
+  <div id="tour-overlay">
+    <div id="tour-card">
+      <h3 id="tour-title">🏛️ Welcome to Smart PS-CRM</h3>
+      <p id="tour-body">A pan-India civic grievance platform — 100% offline, AI-assisted, zero backend.</p>
+      <div class="tour-actions">
+        <button id="tour-prev" class="btn-ghost" style="display:none" onclick="tourPrev()">← Back</button>
+        <button id="tour-next" class="btn-primary" style="font-size:0.85rem;padding:8px 18px" onclick="tourNext()">Next
+          →</button>
+        <button class="btn-ghost" style="font-size:0.82rem" onclick="endTour()">✕ End Tour</button>
+        <span id="tour-progress">1 / 9</span>
+      </div>
+    </div>
+  </div>
+
   <!-- CHATBOT FAB -->
   <button id="chatbot-fab" onclick="toggleChatbot()" title="Ask Smart Assistant">💬</button>
+
+  <!-- Feature 6: Start Demo Tour FAB -->
+  <button id="tour-fab" onclick="startTour()" title="Guided Demo Tour">▶ Start Demo Tour</button>
 
   <!-- CHATBOT PANEL -->
   <div id="chatbot-panel">
@@ -2296,6 +2583,8 @@
   </div>
 
   <script src="app.js"></script>
+  <script src="features.js"></script>
 </body>
+
 
 </html>

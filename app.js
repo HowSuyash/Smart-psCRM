@@ -104,16 +104,18 @@ function $(id) { return document.getElementById(id); }
 
 // ===== NAVIGATION =====
 function showView(name) {
-  ['landing', 'citizen', 'admin-login', 'admin', 'public'].forEach(v => {
+  ['landing', 'citizen', 'admin-login', 'admin', 'public', 'dept-login', 'dept'].forEach(v => {
     const el = $('view-' + v);
     if (el) el.style.display = 'none';
   });
   const el = $('view-' + name);
   if (el) el.style.display = '';
-  $('nav-public').style.display = name === 'admin' ? 'none' : 'flex';
+  $('nav-public').style.display = (name === 'admin' || name === 'dept') ? 'none' : 'flex';
   $('nav-admin').style.display = name === 'admin' ? 'flex' : 'none';
+  const nd = $('nav-dept'); if (nd) nd.style.display = name === 'dept' ? 'flex' : 'none';
   if (name === 'landing') animateCounters();
   if (name === 'admin') { switchAdminTab('dashboard'); }
+  if (name === 'dept') { renderDeptDashboard(); }
 }
 
 function switchCitizenTab(tab) {
@@ -650,12 +652,377 @@ function init() {
   initData();
   if (localStorage.getItem('pscrm_admin')) {
     showView('admin');
+  } else if (localStorage.getItem('pscrm_dept')) {
+    currentDeptId = localStorage.getItem('pscrm_dept');
+    showView('dept');
   } else {
     showView('landing');
   }
 }
 
 document.addEventListener('DOMContentLoaded', init);
+
+// ===== DEPARTMENTAL DASHBOARD =====
+let currentDeptId = null;
+
+function doDeptLogin() {
+  const deptId = $('dept-login-select').value;
+  const pass = $('dept-login-pass').value.trim();
+  if (!deptId) { showToast('Please select a department', 'error'); return; }
+  if (pass !== 'dept@2026') { showToast('Invalid password. Use dept@2026', 'error'); return; }
+  currentDeptId = deptId;
+  localStorage.setItem('pscrm_dept', deptId);
+  showView('dept');
+  showToast('Welcome! Department dashboard loaded 🏢', 'success');
+}
+
+function deptLogout() {
+  currentDeptId = null;
+  localStorage.removeItem('pscrm_dept');
+  showView('landing');
+  showToast('Logged out from department portal', 'info');
+}
+
+// Sets up the header and delegates to the active tab
+function renderDeptDashboard() {
+  currentDeptId = currentDeptId || localStorage.getItem('pscrm_dept');
+  if (!currentDeptId) { showView('dept-login'); return; }
+  const dept = DEPTS.find(d => d.id === currentDeptId);
+  if (!dept) return;
+
+  // Update header
+  const deptIcons = { pwd: '🏗️', water: '💧', electric: '⚡', muni: '🏙️', health: '🏥', transport: '🚌' };
+  const icon = $('dept-dash-icon');
+  if (icon) {
+    icon.textContent = deptIcons[dept.id] || '🏢';
+    icon.style.background = dept.color + '22';
+    icon.style.border = '1px solid ' + dept.color + '55';
+  }
+  const nameEl = $('dept-dash-name'); if (nameEl) nameEl.textContent = dept.name;
+  const subEl = $('dept-dash-sub'); if (subEl) subEl.textContent = dept.short + ' — Officer Command Center · Manage assigned complaints';
+  const officerEl = $('dept-officer-label'); if (officerEl) officerEl.textContent = dept.officer;
+  const phoneEl = $('dept-phone-txt'); if (phoneEl) phoneEl.textContent = dept.phone;
+  const phoneLink = $('dept-phone-link'); if (phoneLink) phoneLink.href = 'tel:' + dept.phone;
+
+  // Update nav label
+  const navLabel = $('dept-nav-label');
+  if (navLabel) navLabel.textContent = '🏢 ' + dept.short + ' Portal';
+
+  // Reset to overview tab
+  ['overview','complaints','analytics','sla'].forEach(t => {
+    const el = $('dept-tab-' + t); if (el) el.style.display = t === 'overview' ? '' : 'none';
+    const btn = $('dtab-' + t); if (btn) btn.classList.toggle('active', t === 'overview');
+  });
+  renderDeptOverview();
+}
+
+function switchDeptTab(tab) {
+  ['overview','complaints','analytics','sla'].forEach(t => {
+    const el = $('dept-tab-' + t); if (el) el.style.display = t === tab ? '' : 'none';
+    const btn = $('dtab-' + t); if (btn) btn.classList.toggle('active', t === tab);
+  });
+  if (tab === 'overview') renderDeptOverview();
+  if (tab === 'complaints') renderDeptComplaintsTab();
+  if (tab === 'analytics') setTimeout(renderDeptAnalytics, 50);
+  if (tab === 'sla') renderDeptSLATab();
+}
+
+function getDeptData() {
+  return getData().filter(c => c.deptId === currentDeptId);
+}
+
+function renderDeptOverview() {
+  const dept = DEPTS.find(d => d.id === currentDeptId);
+  if (!dept) return;
+  const data = getDeptData();
+  const total = data.length;
+  const resolved = data.filter(c => c.status === 'Resolved' || c.status === 'Closed').length;
+  const pending = data.filter(c => ['New','Triaged','Assigned'].includes(c.status)).length;
+  const inProg = data.filter(c => c.status === 'In Progress').length;
+  const overdue = data.filter(c => !['Resolved','Closed'].includes(c.status) && hoursAgo(c.createdAt) > 48).length;
+  const rate = total ? Math.round(resolved / total * 100) : 0;
+
+  // KPI Cards
+  const kpis = [
+    { icon: '📋', val: total, lbl: 'Total Assigned', color: dept.color, trend: 'All time', trendCls: '' },
+    { icon: '✅', val: resolved, lbl: 'Resolved', color: '#10b981', trend: rate + '% rate', trendCls: 'background:rgba(16,185,129,0.1);color:var(--success)' },
+    { icon: '⏳', val: pending, lbl: 'Pending', color: '#f59e0b', trend: 'Needs action', trendCls: 'background:rgba(245,158,11,0.1);color:var(--warning)' },
+    { icon: '🔄', val: inProg, lbl: 'In Progress', color: '#3b82f6', trend: 'Being worked', trendCls: 'background:rgba(59,130,246,0.1);color:#60a5fa' },
+    { icon: '🚨', val: overdue, lbl: 'SLA Breaches', color: '#ef4444', trend: overdue > 0 ? '⚠️ Urgent!' : '✅ On track', trendCls: overdue > 0 ? 'background:rgba(239,68,68,0.1);color:var(--danger)' : 'background:rgba(16,185,129,0.1);color:var(--success)' },
+  ];
+  const kpiGrid = $('dept-kpi-grid');
+  if (kpiGrid) kpiGrid.innerHTML = kpis.map(k => `
+    <div class="dept-kpi-card" style="border-top:3px solid ${k.color}">
+      <div class="dept-kpi-icon">${k.icon}</div>
+      <div class="dept-kpi-val" style="color:${k.color}">${k.val}</div>
+      <div class="dept-kpi-lbl">${k.lbl}</div>
+      <span class="dept-kpi-trend" style="${k.trendCls}">${k.trend}</span>
+    </div>`).join('');
+
+  // Recent complaints list
+  const recent = data.slice(0, 7);
+  const recentList = $('dept-recent-list');
+  if (recentList) recentList.innerHTML = recent.length ? recent.map(c => `
+    <div class="dept-complaint-row" onclick="openModal('${c.id}')">
+      <div class="dcr-id">${c.id}</div>
+      <div class="dcr-info">
+        <div class="dcr-name">${c.name}</div>
+        <div class="dcr-loc">${c.location} · ${c.category}</div>
+      </div>
+      <div class="dcr-actions">
+        <span class="${priorityClass(c.priority)}">${c.priority}</span>
+        <span class="${statusClass(c.status)}">${c.status}</span>
+      </div>
+    </div>`).join('') : '<div class="empty-state">No complaints assigned yet</div>';
+
+  // Priority breakdown pills
+  const priorities = ['Critical','High','Medium','Low'];
+  const prColors = { Critical:'#ef4444', High:'#f59e0b', Medium:'#6366f1', Low:'#10b981' };
+  const priCounts = priorities.map(p => data.filter(c => c.priority === p).length);
+  const priorityBar = $('dept-priority-bar');
+  if (priorityBar) priorityBar.innerHTML = priorities.map((p, i) => `
+    <div class="dpb-item" style="background:${prColors[p]}22;border:1px solid ${prColors[p]}44">
+      <span class="dpb-val" style="color:${prColors[p]}">${priCounts[i]}</span>
+      <span style="color:var(--mid);font-size:0.7rem;font-weight:600">${p}</span>
+    </div>`).join('');
+
+  // Priority doughnut chart
+  destroyChart('dept-priority');
+  const ctx1 = $('dept-chart-priority');
+  if (ctx1) {
+    chartInstances['dept-priority'] = new Chart(ctx1, {
+      type: 'doughnut',
+      data: {
+        labels: priorities,
+        datasets: [{ data: priCounts, backgroundColor: priorities.map(p => prColors[p] + 'cc'), borderWidth: 0, borderRadius: 4 }]
+      },
+      options: { responsive: true, cutout: '60%', plugins: { legend: { position: 'right', labels: { color: '#8892a4', boxWidth: 10, padding: 8, font: { size: 11 } } } } }
+    });
+  }
+
+  // SLA Compliance Ring
+  const slaOnTime = data.filter(c => !['Resolved','Closed'].includes(c.status) && hoursAgo(c.createdAt) <= 48).length;
+  const slaTotal = data.filter(c => !['Resolved','Closed'].includes(c.status)).length;
+  const slaPct = slaTotal ? Math.round(slaOnTime / slaTotal * 100) : 100;
+  const ringColor = slaPct >= 80 ? '#10b981' : slaPct >= 50 ? '#f59e0b' : '#ef4444';
+  const r = 38, circ = 2 * Math.PI * r;
+  const dash = (slaPct / 100) * circ;
+  const slaWrap = $('dept-sla-ring-wrap');
+  if (slaWrap) slaWrap.innerHTML = `
+    <div class="sla-ring">
+      <svg width="100" height="100" viewBox="0 0 100 100">
+        <circle cx="50" cy="50" r="${r}" fill="none" stroke="rgba(255,255,255,0.07)" stroke-width="8"/>
+        <circle cx="50" cy="50" r="${r}" fill="none" stroke="${ringColor}" stroke-width="8"
+          stroke-dasharray="${dash.toFixed(1)} ${circ.toFixed(1)}" stroke-linecap="round"/>
+      </svg>
+      <div class="sla-ring-val" style="color:${ringColor}">${slaPct}%<span class="sla-ring-sub">SLA OK</span></div>
+    </div>
+    <div style="flex:1">
+      <div style="margin-bottom:10px">
+        <div style="font-size:0.78rem;color:var(--mid);font-weight:600;text-transform:uppercase;letter-spacing:0.4px;margin-bottom:4px">On-Time</div>
+        <div style="font-size:1.3rem;font-weight:900;color:${ringColor}">${slaOnTime} <span style="font-size:0.8rem;font-weight:400;color:var(--mid)">/ ${slaTotal} active</span></div>
+      </div>
+      <div>
+        <div style="font-size:0.78rem;color:var(--mid);font-weight:600;text-transform:uppercase;letter-spacing:0.4px;margin-bottom:4px">Overdue</div>
+        <div style="font-size:1.3rem;font-weight:900;color:${overdue > 0 ? '#ef4444' : 'var(--success)'}">${overdue} <span style="font-size:0.8rem;font-weight:400;color:var(--mid)">complaints</span></div>
+      </div>
+    </div>`;
+}
+
+function renderDeptComplaintsTab() {
+  const data = getDeptData();
+  const search = ($('dept-search') || {}).value?.toLowerCase() || '';
+  const fStatus = ($('dept-filter-status') || {}).value || '';
+  const fPriority = ($('dept-filter-priority') || {}).value || '';
+
+  const filtered = data.filter(c => {
+    if (search && ![c.id, c.name, c.location, c.category].join(' ').toLowerCase().includes(search)) return false;
+    if (fStatus && c.status !== fStatus) return false;
+    if (fPriority && c.priority !== fPriority) return false;
+    return true;
+  });
+
+  const tbody = $('dept-complaints-tbody');
+  if (!tbody) return;
+  if (!filtered.length) { tbody.innerHTML = `<tr><td colspan="9" class="no-results">No complaints match your filters</td></tr>`; return; }
+  tbody.innerHTML = filtered.map(c => {
+    const hrs = hoursAgo(c.createdAt);
+    const isResolved = ['Resolved','Closed'].includes(c.status);
+    const slaColor = isResolved ? 'var(--success)' : hrs > 48 ? '#ef4444' : hrs > 36 ? '#f59e0b' : 'var(--success)';
+    const slaLabel = isResolved ? '✅ Done' : hrs > 48 ? `🔴 ${Math.round(hrs)}h OVER` : hrs > 36 ? `🟡 ${Math.round(hrs)}h` : `🟢 ${Math.round(hrs)}h`;
+    return `<tr>
+      <td style="color:var(--primary);font-weight:700;font-family:monospace;font-size:0.82rem">${c.id}</td>
+      <td><div style="font-weight:500;font-size:0.85rem">${c.name}</div><div style="font-size:0.74rem;color:var(--mid)">${c.phone}</div></td>
+      <td style="color:var(--mid);font-size:0.8rem">${c.location}</td>
+      <td style="font-size:0.8rem">${c.category}</td>
+      <td><span class="${priorityClass(c.priority)}">${c.priority}</span></td>
+      <td>
+        <select class="quick-status-select" data-id="${c.id}" onchange="deptUpdateStatus(this)">
+          ${['New','Triaged','Assigned','In Progress','Resolved','Closed'].map(s => `<option ${c.status===s?'selected':''}>${s}</option>`).join('')}
+        </select>
+      </td>
+      <td style="font-size:0.78rem;color:var(--mid)">${fmtDate(c.createdAt)}</td>
+      <td style="font-size:0.78rem;font-weight:700;color:${slaColor}">${slaLabel}</td>
+      <td><button class="icon-btn" onclick="openModal('${c.id}')">👁 View</button></td>
+    </tr>`;
+  }).join('');
+}
+
+function deptUpdateStatus(select) {
+  const id = select.dataset.id;
+  const newStatus = select.value;
+  const data = getData();
+  const idx = data.findIndex(c => c.id === id);
+  if (idx < 0) return;
+  data[idx].status = newStatus;
+  data[idx].updatedAt = new Date().toISOString();
+  if ((newStatus === 'Resolved' || newStatus === 'Closed') && !data[idx].resolvedAt) {
+    data[idx].resolvedAt = new Date().toISOString();
+  }
+  saveData(data);
+  showToast(`${id} → ${newStatus}`, 'success');
+}
+
+function renderDeptAnalytics() {
+  const dept = DEPTS.find(d => d.id === currentDeptId);
+  if (!dept) return;
+  const data = getDeptData();
+  const resolved = data.filter(c => ['Resolved','Closed'].includes(c.status));
+  const rate = data.length ? Math.round(resolved.length / data.length * 100) : 0;
+  const avgHrs = resolved.filter(c => c.resolvedAt).reduce((a, c) =>
+    a + Math.abs(hoursAgo(c.createdAt) - hoursAgo(c.resolvedAt)), 0) / Math.max(resolved.filter(c => c.resolvedAt).length, 1);
+  const slaBreaches = data.filter(c => !['Resolved','Closed'].includes(c.status) && hoursAgo(c.createdAt) > 48).length;
+  const rated = data.filter(c => c.rating);
+  const avgRating = rated.length ? (rated.reduce((a,c) => a+c.rating,0)/rated.length).toFixed(1) : 'N/A';
+
+  // Analytics KPIs
+  const kpis = [
+    { icon:'📊', val: data.length, lbl:'Total Cases', color: dept.color },
+    { icon:'✅', val: rate+'%', lbl:'Resolution Rate', color:'#10b981' },
+    { icon:'⏱️', val: Math.round(Math.abs(avgHrs))+'h', lbl:'Avg Resolution', color:'#f59e0b' },
+    { icon:'🚨', val: slaBreaches, lbl:'SLA Breaches', color:'#ef4444' },
+    { icon:'⭐', val: avgRating !== 'N/A' ? avgRating+'★' : 'N/A', lbl:'Avg Rating', color:'#f59e0b' },
+  ];
+  const kpiEl = $('dept-analytics-kpis');
+  if (kpiEl) kpiEl.innerHTML = kpis.map(k => `
+    <div class="dept-kpi-card" style="border-top:3px solid ${k.color}">
+      <div class="dept-kpi-icon">${k.icon}</div>
+      <div class="dept-kpi-val" style="color:${k.color}">${k.val}</div>
+      <div class="dept-kpi-lbl">${k.lbl}</div>
+    </div>`).join('');
+
+  // Trend chart — last 7 days
+  destroyChart('dept-trend');
+  const baseDate = '2026-03-20';
+  const days = [...Array(7)].map((_, i) => { const d = new Date(baseDate); d.setDate(d.getDate() - 6 + i); return d; });
+  const ctx1 = $('dept-chart-trend');
+  if (ctx1) {
+    chartInstances['dept-trend'] = new Chart(ctx1, {
+      type: 'bar',
+      data: {
+        labels: days.map(d => d.toLocaleDateString('en-IN', { day:'2-digit', month:'short' })),
+        datasets: [
+          { label: 'Filed', data: days.map(d => data.filter(c => new Date(c.createdAt).toDateString()===d.toDateString()).length), backgroundColor: dept.color+'99', borderRadius: 5 },
+          { label: 'Resolved', data: days.map(d => data.filter(c => c.resolvedAt && new Date(c.resolvedAt).toDateString()===d.toDateString()).length), backgroundColor: '#10b98199', borderRadius: 5 },
+        ]
+      },
+      options: { responsive: true, plugins: { legend: { labels: { color:'#8892a4' } } }, scales: { y: { beginAtZero:true, grid: { color:'rgba(255,255,255,0.05)' }, ticks:{color:'#8892a4'} }, x: { grid:{display:false}, ticks:{color:'#8892a4'} } } }
+    });
+  }
+
+  // Category distribution
+  destroyChart('dept-cat');
+  const cats = [...new Set(data.map(c => c.category))];
+  const ctx2 = $('dept-chart-cat');
+  if (ctx2 && cats.length) {
+    chartInstances['dept-cat'] = new Chart(ctx2, {
+      type: 'doughnut',
+      data: {
+        labels: cats,
+        datasets: [{ data: cats.map(cat => data.filter(c => c.category===cat).length), backgroundColor: ['#00cfff','#6366f1','#f59e0b','#10b981','#ec4899'], borderWidth:0 }]
+      },
+      options: { responsive: true, cutout:'55%', plugins: { legend: { position:'right', labels:{color:'#8892a4',boxWidth:10,padding:8,font:{size:11}} } } }
+    });
+  }
+
+  // Resolution time by priority
+  destroyChart('dept-restime');
+  const priorities = ['Critical','High','Medium','Low'];
+  const prColors = { Critical:'#ef4444', High:'#f59e0b', Medium:'#6366f1', Low:'#10b981' };
+  const resTimes = priorities.map(p => {
+    const subset = resolved.filter(c => c.priority === p && c.resolvedAt);
+    return subset.length ? Math.round(subset.reduce((a,c) => a + Math.abs(hoursAgo(c.createdAt) - hoursAgo(c.resolvedAt)), 0) / subset.length) : 0;
+  });
+  const ctx3 = $('dept-chart-restime');
+  if (ctx3) {
+    chartInstances['dept-restime'] = new Chart(ctx3, {
+      type: 'bar',
+      data: {
+        labels: priorities,
+        datasets: [{ label: 'Avg Resolution Hours', data: resTimes, backgroundColor: priorities.map(p => prColors[p]+'99'), borderRadius: 6 }]
+      },
+      options: { responsive: true, indexAxis:'y', plugins:{ legend:{display:false} }, scales: { x:{beginAtZero:true,grid:{color:'rgba(255,255,255,0.05)'},ticks:{color:'#8892a4'}}, y:{grid:{display:false},ticks:{color:'#8892a4'}} } }
+    });
+  }
+}
+
+function renderDeptSLATab() {
+  const data = getDeptData();
+  const active = data.filter(c => !['Resolved','Closed'].includes(c.status));
+  const overdue = active.filter(c => hoursAgo(c.createdAt) > 48).sort((a,b) => hoursAgo(b.createdAt) - hoursAgo(a.createdAt));
+  const warning = active.filter(c => hoursAgo(c.createdAt) >= 36 && hoursAgo(c.createdAt) <= 48);
+
+  const buildSLAItem = (c, type) => {
+    const hrs = Math.round(hoursAgo(c.createdAt));
+    const color = type === 'over' ? '#ef4444' : '#f59e0b';
+    return `<div class="sla-alert" style="border-color:${color}33;background:${color}0d;margin-bottom:8px">
+      <div class="sla-alert-info">
+        <div><span class="sla-alert-id" style="color:${color}">${c.id}</span> — ${c.name}</div>
+        <div class="sla-alert-hours">${c.category} · ${c.priority} · ${hrs}h elapsed · ${c.status}</div>
+      </div>
+      <button class="icon-btn" onclick="openModal('${c.id}')">📋 Act</button>
+    </div>`;
+  };
+
+  const overdueEl = $('dept-sla-overdue');
+  if (overdueEl) overdueEl.innerHTML = overdue.length
+    ? overdue.map(c => buildSLAItem(c, 'over')).join('')
+    : '<div class="empty-state">✅ No overdue complaints!</div>';
+
+  const warnEl = $('dept-sla-warning');
+  if (warnEl) warnEl.innerHTML = warning.length
+    ? warning.map(c => buildSLAItem(c, 'warn')).join('')
+    : '<div class="empty-state">✅ No complaints in warning zone</div>';
+
+  // SLA summary bar chart
+  destroyChart('dept-sla');
+  const onTime = active.filter(c => hoursAgo(c.createdAt) < 36).length;
+  const ctx = $('dept-chart-sla');
+  if (ctx) {
+    chartInstances['dept-sla'] = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: ['On Track (<36h)', 'Warning (36–48h)', 'Overdue (>48h)', 'Resolved'],
+        datasets: [{ data: [onTime, warning.length, overdue.length, data.filter(c => ['Resolved','Closed'].includes(c.status)).length],
+          backgroundColor: ['#10b981cc','#f59e0bcc','#ef4444cc','#6366f1cc'], borderRadius: 6 }]
+      },
+      options: { responsive: true, plugins:{legend:{display:false}}, scales: { y:{beginAtZero:true,grid:{color:'rgba(255,255,255,0.05)'},ticks:{color:'#8892a4'}}, x:{grid:{display:false},ticks:{color:'#8892a4'}} } }
+    });
+  }
+}
+
+function exportDeptCSV() {
+  const dept = DEPTS.find(d => d.id === currentDeptId);
+  const data = getDeptData();
+  const headers = ['Ticket ID','Name','Phone','Location','Category','Priority','Status','Filed','Resolved','Remarks','Rating'];
+  const rows = data.map(c => [c.id,c.name,c.phone,c.location,c.category,c.priority,c.status,fmtDate(c.createdAt),fmtDate(c.resolvedAt),c.remarks||'',c.rating?c.rating+'★':''].map(v=>`"${String(v).replace(/"/g,'""')}"`).join(','));
+  const csv = [headers.join(','),...rows].join('\n');
+  const blob = new Blob([csv], {type:'text/csv'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a'); a.href=url; a.download=`${dept?dept.short:'Dept'}_Report_${new Date().toISOString().slice(0,10)}.csv`;
+  a.click(); URL.revokeObjectURL(url);
+  showToast('📄 Department CSV exported!', 'success');
+}
 
 // ===== FEATURE 1: AREA HEATMAP =====
 const HEATMAP_AREAS = [

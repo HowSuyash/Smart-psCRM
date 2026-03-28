@@ -1270,8 +1270,8 @@ function printReport() {
   const rate = total ? Math.round(resolved / total * 100) : 0;
   const slaBreaches = data.filter(c => !['Resolved', 'Closed'].includes(c.status) && hoursAgo(c.createdAt) > 48).length;
   const win = window.open('', '_blank');
-  win.document.write(`<!DOCTYPE html><html><head><title>Smart PS-CRM Report</title><style>body{font-family:Arial,sans-serif;padding:30px;color:#111}h1{color:#1a1a2e}table{width:100%;border-collapse:collapse;margin-top:20px;font-size:12px}th{background:#1a1a2e;color:#fff;padding:8px;text-align:left}td{padding:7px 8px;border-bottom:1px solid #eee}.kpi{display:inline-block;margin:0 20px 15px 0;text-align:center}.kpi-val{font-size:2rem;font-weight:900;color:#1a1a2e}.kpi-lbl{font-size:11px;color:#666}</style></head><body>
-    <h1>🏛️ Smart PS-CRM — Complaints Report</h1>
+  win.document.write(`<!DOCTYPE html><html><head><title>JanVaani Report</title><style>body{font-family:Arial,sans-serif;padding:30px;color:#111}h1{color:#1a1a2e}table{width:100%;border-collapse:collapse;margin-top:20px;font-size:12px}th{background:#1a1a2e;color:#fff;padding:8px;text-align:left}td{padding:7px 8px;border-bottom:1px solid #eee}.kpi{display:inline-block;margin:0 20px 15px 0;text-align:center}.kpi-val{font-size:2rem;font-weight:900;color:#1a1a2e}.kpi-lbl{font-size:11px;color:#666}</style></head><body>
+    <h1>🏛️ JanVaani — Complaints Report</h1>
     <p style="color:#666">India Innovates 2026 | Generated: ${new Date().toLocaleString('en-IN')}</p>
     <div><span class="kpi"><div class="kpi-val">${total}</div><div class="kpi-lbl">Total Complaints</div></span>
     <span class="kpi"><div class="kpi-val">${rate}%</div><div class="kpi-lbl">Resolution Rate</div></span>
@@ -1337,7 +1337,7 @@ function renderPublicDashboard() {
 
 // ===== FEATURE 6: GUIDED DEMO TOUR =====
 const TOUR_STEPS = [
-  { title: '🏛️ Welcome to Smart PS-CRM', body: 'A pan-India civic grievance platform — 100% offline, AI-assisted, zero backend.', action: () => showView('landing'), highlight: null },
+  { title: '🏛️ Welcome to JanVaani', body: 'A pan-India civic grievance platform — 100% offline, AI-assisted, zero backend.', action: () => showView('landing'), highlight: null },
   { title: '📝 Step 1: File a Complaint', body: 'Citizens can file complaints in 3 easy steps. AI auto-detects priority!', action: () => showView('citizen'), highlight: 'citizen-submit' },
   { title: '🔍 Step 2: Track Your Ticket', body: 'Using just their Ticket ID, citizens track every status update — no login needed.', action: () => switchCitizenTab('track'), highlight: 'citizen-track' },
   { title: '🏛️ Step 3: Admin Command Center', body: 'Admins manage all complaints, assign departments, and monitor SLA breaches.', action: () => { localStorage.setItem('pscrm_admin', '1'); showView('admin'); switchAdminTab('dashboard'); }, highlight: 'admin-tab-dashboard' },
@@ -1345,7 +1345,7 @@ const TOUR_STEPS = [
   { title: '⚡ Workflow Kanban', body: 'Visual pipeline of complaints: New → Triaged → Assigned → In Progress → Resolved.', action: () => switchAdminTab('workflow'), highlight: 'admin-tab-workflow' },
   { title: '🗺️ Area Heatmap', body: 'See which cities have the most complaints — pan-India live heatmap!', action: () => switchAdminTab('heatmap'), highlight: 'admin-tab-heatmap' },
   { title: '🌐 Public Transparency', body: 'Any citizen can see live resolution stats — building govt accountability.', action: () => { localStorage.removeItem('pscrm_admin'); showView('public'); renderPublicDashboard(); }, highlight: 'view-public' },
-  { title: '🎉 Tour Complete!', body: 'Smart PS-CRM — Digitizing civic governance, one complaint at a time. 🇮🇳', action: () => showView('landing'), highlight: null },
+  { title: '🎉 Tour Complete!', body: 'JanVaani — Digitizing civic governance, one complaint at a time. 🇮🇳', action: () => showView('landing'), highlight: null },
 ];
 
 let tourActive = false;
@@ -1397,7 +1397,7 @@ const TRANSLATIONS = {
     hero_sub: 'A centralized digital command center that brings citizens and government together — automating complaint workflows, assigning tasks to departments, and resolving every grievance transparently.',
     hero_btn1: '📝 File a Complaint', hero_btn2: '🏛️ Admin Command Center',
     stat_total: 'Total Complaints', stat_rate: '% Resolution Rate', stat_depts: 'Departments', stat_hrs: 'Hrs Avg Resolution',
-    feat_heading: 'Why Smart PS-CRM?', feat_sub: 'Solving civic grievances with intelligence, transparency, and speed',
+    feat_heading: 'Why JanVaani?', feat_sub: 'Solving civic grievances with intelligence, transparency, and speed',
     feat1_h: 'Smart Complaint Submission', feat1_p: 'AI-powered priority detection, auto-categorization, and unique Ticket ID on every submission.',
     feat2_h: 'Real-Time Tracking', feat2_p: 'Citizens track their grievance status live with a full timeline view — just using their Ticket ID.',
     feat3_h: 'Automated Workflow', feat3_p: 'Smart auto-assignment routes complaints to the correct department instantly, with zero manual effort.',
@@ -1426,7 +1426,7 @@ const TRANSLATIONS = {
     btn_track_ticket: '🔍 Track This Ticket', btn_file_another: '+ File Another', btn_home: 'Home',
     track_h: 'Track Your Complaint', track_p: 'Enter the Ticket ID you received on submission', ph_track: 'e.g. PSC-0042', btn_track: 'Track →',
     // Admin Login
-    login_h: 'Admin Command Center', login_p: 'Smart PS-CRM — Civic Grievance Command Center',
+    login_h: 'Admin Command Center', login_p: 'JanVaani — Civic Grievance Command Center',
     login_user: 'Username', login_pass: 'Password', login_btn: 'Login to Dashboard',
     login_demo: 'Demo credentials: admin / admin123', login_back: '← Back to Home',
     // Admin Sidebar
@@ -1434,7 +1434,7 @@ const TRANSLATIONS = {
     sb_workflow: '⚡ Workflow', sb_departments: '🏢 Departments',
     sb_loggedas: 'Logged in as', sb_logout: '🚪 Logout',
     // Chatbot
-    cb_title: 'Smart PS-CRM Assistant', cb_online: '● Online — Always here to help',
+    cb_title: 'JanVaani Assistant', cb_online: '● Online — Always here to help',
   },
   hi: {
     nav_file: 'शिकायत दर्ज करें', nav_track: 'टिकट ट्रैक करें', nav_admin: 'एडमिन पोर्टल',
@@ -1443,7 +1443,7 @@ const TRANSLATIONS = {
     hero_sub: 'एक केंद्रीकृत डिजिटल कमांड सेंटर जो नागरिकों और सरकार को एक साथ लाता है — शिकायत वर्कफ़्लो को स्वचालित करता है और हर समस्या को पारदर्शिता से हल करता है।',
     hero_btn1: '📝 शिकायत दर्ज करें', hero_btn2: '🏛️ एडमिन कमांड सेंटर',
     stat_total: 'कुल शिकायतें', stat_rate: '% समाधान दर', stat_depts: 'विभाग', stat_hrs: 'औसत समाधान (घंटे)',
-    feat_heading: 'Smart PS-CRM क्यों?', feat_sub: 'बुद्धिमत्ता, पारदर्शिता और गति के साथ नागरिक शिकायतों का समाधान',
+    feat_heading: 'JanVaani क्यों?', feat_sub: 'बुद्धिमत्ता, पारदर्शिता और गति के साथ नागरिक शिकायतों का समाधान',
     feat1_h: 'स्मार्ट शिकायत सबमिशन', feat1_p: 'AI-संचालित प्राथमिकता पहचान, ऑटो-वर्गीकरण और हर सबमिशन पर यूनिक टिकट ID।',
     feat2_h: 'रियल-टाइम ट्रैकिंग', feat2_p: 'नागरिक अपनी शिकायत की स्थिति लाइव ट्रैक करते हैं — केवल टिकट ID से।',
     feat3_h: 'स्वचालित वर्कफ़्लो', feat3_p: 'स्मार्ट ऑटो-असाइनमेंट सही विभाग को तुरंत रूट करता है।',
@@ -1470,7 +1470,7 @@ const TRANSLATIONS = {
     success_h: 'शिकायत सफलतापूर्वक दर्ज!', success_p: 'आपका यूनिक टिकट ID है:', success_save: '📌 अपनी शिकायत ट्रैक करने के लिए यह ID सहेजें',
     btn_track_ticket: '🔍 टिकट ट्रैक करें', btn_file_another: '+ और दर्ज करें', btn_home: 'होम',
     track_h: 'अपनी शिकायत ट्रैक करें', track_p: 'सबमिशन पर प्राप्त टिकट ID दर्ज करें', ph_track: 'जैसे PSC-0042', btn_track: 'ट्रैक करें →',
-    login_h: 'एडमिन कमांड सेंटर', login_p: 'Smart PS-CRM — बेंगलुरु सिटी कॉर्पोरेशन',
+    login_h: 'एडमिन कमांड सेंटर', login_p: 'JanVaani — बेंगलुरु सिटी कॉर्पोरेशन',
     login_user: 'यूज़रनेम', login_pass: 'पासवर्ड', login_btn: 'डैशबोर्ड में लॉगिन करें',
     login_demo: 'डेमो क्रेडेंशियल: admin / admin123', login_back: '← होम पर वापस',
     sb_dashboard: '📊 डैशबोर्ड', sb_complaints: '📋 शिकायतें', sb_analytics: '📈 एनालिटिक्स',
@@ -1485,7 +1485,7 @@ const TRANSLATIONS = {
     hero_sub: 'ನಾಗರಿಕರು ಮತ್ತು ಸರ್ಕಾರವನ್ನು ಒಟ್ಟುಗೂಡಿಸುವ ಕೇಂದ್ರೀಕೃತ ಡಿಜಿಟಲ್ ಕಮಾಂಡ್ ಸೆಂಟರ್ — ದೂರು ವರ್ಕ್‌ಫ್ಲೋಗಳನ್ನು ಸ್ವಯಂಚಾಲಿತಗೊಳಿಸಿ ಪ್ರತಿ ಸಮಸ್ಯೆಯನ್ನು ಪಾರದರ್ಶಕವಾಗಿ ಪರಿಹರಿಸುತ್ತದೆ.',
     hero_btn1: '📝 ದೂರು ಸಲ್ಲಿಸಿ', hero_btn2: '🏛️ ಅಡ್ಮಿನ್ ಕಮಾಂಡ್ ಸೆಂಟರ್',
     stat_total: 'ಒಟ್ಟು ದೂರುಗಳು', stat_rate: '% ಪರಿಹಾರ ದರ', stat_depts: 'ಇಲಾಖೆಗಳು', stat_hrs: 'ಸರಾಸರಿ ಪರಿಹಾರ (ಗಂ.)',
-    feat_heading: 'Smart PS-CRM ಏಕೆ?', feat_sub: 'ಬುದ್ಧಿವಂತಿಕೆ, ಪಾರದರ್ಶಕತೆ ಮತ್ತು ವೇಗದೊಂದಿಗೆ ಸಮಸ್ಯೆ ಪರಿಹಾರ',
+    feat_heading: 'JanVaani ಏಕೆ?', feat_sub: 'ಬುದ್ಧಿವಂತಿಕೆ, ಪಾರದರ್ಶಕತೆ ಮತ್ತು ವೇಗದೊಂದಿಗೆ ಸಮಸ್ಯೆ ಪರಿಹಾರ',
     feat1_h: 'ಸ್ಮಾರ್ಟ್ ದೂರು ಸಲ್ಲಿಕೆ', feat1_p: 'AI ಚಾಲಿತ ಆದ್ಯತೆ ಪತ್ತೆ ಮತ್ತು ಅನನ್ಯ ಟಿಕೆಟ್ ID.',
     feat2_h: 'ರಿಯಲ್-ಟೈಮ್ ಟ್ರ್ಯಾಕಿಂಗ್', feat2_p: 'ಟಿಕೆಟ್ ID ಬಳಸಿ ನಾಗರಿಕರು ಸ್ಥಿತಿ ಲೈವ್ ಟ್ರ್ಯಾಕ್ ಮಾಡಬಹುದು.',
     feat3_h: 'ಸ್ವಯಂಚಾಲಿತ ವರ್ಕ್‌ಫ್ಲೋ', feat3_p: 'ಸ್ಮಾರ್ಟ್ ಆಟೋ-ಅಸೈನ್‌ಮೆಂಟ್ ತಕ್ಷಣ ಸರಿಯಾದ ಇಲಾಖೆಗೆ ರೂಟ್ ಮಾಡುತ್ತದೆ.',
@@ -1512,7 +1512,7 @@ const TRANSLATIONS = {
     success_h: 'ದೂರು ಯಶಸ್ವಿಯಾಗಿ ಸಲ್ಲಿಸಲಾಗಿದೆ!', success_p: 'ನಿಮ್ಮ ಅನನ್ಯ ಟಿಕೆಟ್ ID:', success_save: '📌 ದೂರು ಟ್ರ್ಯಾಕ್ ಮಾಡಲು ಈ ID ಉಳಿಸಿ',
     btn_track_ticket: '🔍 ಟಿಕೆಟ್ ಟ್ರ್ಯಾಕ್ ಮಾಡಿ', btn_file_another: '+ ಮತ್ತೊಂದು ಸಲ್ಲಿಸಿ', btn_home: 'ಹೋಮ್',
     track_h: 'ನಿಮ್ಮ ದೂರು ಟ್ರ್ಯಾಕ್ ಮಾಡಿ', track_p: 'ಸಲ್ಲಿಕೆ ಸಮಯ ಪಡೆದ ಟಿಕೆಟ್ ID ನಮೂದಿಸಿ', ph_track: 'ಉದಾ: PSC-0042', btn_track: 'ಟ್ರ್ಯಾಕ್ →',
-    login_h: 'ಅಡ್ಮಿನ್ ಕಮಾಂಡ್ ಸೆಂಟರ್', login_p: 'Smart PS-CRM — ಬೆಂಗಳೂರು ಸಿಟಿ ಕಾರ್ಪೊರೇಷನ್',
+    login_h: 'ಅಡ್ಮಿನ್ ಕಮಾಂಡ್ ಸೆಂಟರ್', login_p: 'JanVaani — ಬೆಂಗಳೂರು ಸಿಟಿ ಕಾರ್ಪೊರೇಷನ್',
     login_user: 'ಯೂಸರ್‌ನೇಮ್', login_pass: 'ಪಾಸ್‌ವರ್ಡ್', login_btn: 'ಡ್ಯಾಶ್‌ಬೋರ್ಡ್‌ಗೆ ಲಾಗಿನ್',
     login_demo: 'ಡೆಮೋ ಕ್ರೆಡೆನ್ಶಿಯಲ್ಸ್: admin / admin123', login_back: '← ಹೋಮ್‌ಗೆ ಹಿಂದಿರುಗಿ',
     sb_dashboard: '📊 ಡ್ಯಾಶ್‌ಬೋರ್ಡ್', sb_complaints: '📋 ದೂರುಗಳು', sb_analytics: '📈 ಅನಾಲಿಟಿಕ್ಸ್',
@@ -1664,18 +1664,18 @@ Once logged in, you can manage complaints, view analytics, assign departments, a
   },
   {
     patterns: [/what.*crm|about|purpose|what is|smart ps|platform|help/i],
-    en: `🏛️ <b>About Smart PS-CRM:</b><br>
-Smart PS-CRM is a <b>Citizen Grievance Command Center</b> for civic governance across India.<br><br>
+    en: `🏛️ <b>About JanVaani:</b><br>
+JanVaani is a <b>Citizen Grievance Command Center</b> for civic governance across India.<br><br>
 It bridges citizens & government by:<br>
 ✅ Automating complaint routing<br>
 ✅ Providing real-time tracking<br>
 ✅ Monitoring SLA compliance<br>
 ✅ Offering analytics for officials<br><br>
 Built for <b>Hackathon 2026 — Smart Governance</b> 🏆`,
-    hi: `🏛️ <b>Smart PS-CRM के बारे में:</b><br>
+    hi: `🏛️ <b>JanVaani के बारे में:</b><br>
 यह बेंगलुरु सिटी कॉर्पोरेशन का <b>नागरिक शिकायत केंद्र</b> है।<br>
 यह नागरिकों और सरकार को जोड़ता है — स्वचालित रूटिंग, रियल-टाइम ट्रैकिंग और SLA निगरानी के साथ।`,
-    kn: `🏛️ <b>Smart PS-CRM ಬಗ್ಗೆ:</b><br>
+    kn: `🏛️ <b>JanVaani ಬಗ್ಗೆ:</b><br>
 ಇದು ಬೆಂಗಳೂರು ಸಿಟಿ ಕಾರ್ಪೊರೇಷನ್‌ನ <b>ನಾಗರಿಕ ದೂರು ಕೇಂದ್ರ</b>.<br>
 ಸ್ವಯಂಚಾಲಿತ ರೂಟಿಂಗ್, ರಿಯಲ್-ಟೈಮ್ ಟ್ರ್ಯಾಕಿಂಗ್ ಮತ್ತು SLA ಮೇಲ್ವಿಚಾರಣೆ.`,
   },
@@ -1715,9 +1715,9 @@ Try clicking one of the quick-reply buttons below!`,
 };
 
 const GREETINGS = {
-  en: `👋 Hello! I'm the <b>Smart PS-CRM Assistant</b>.<br>I can help you file complaints, track tickets, understand departments, and more!<br><br>What can I help you with today?`,
-  hi: `👋 नमस्ते! मैं <b>Smart PS-CRM सहायक</b> हूं।<br>मैं शिकायत दर्ज करने, टिकट ट्रैक करने और अधिक में मदद कर सकता हूं!`,
-  kn: `👋 ನಮಸ್ಕಾರ! ನಾನು <b>Smart PS-CRM ಸಹಾಯಕ</b>.<br>ದೂರು ಸಲ್ಲಿಸಲು, ಟಿಕೆಟ್ ಟ್ರ್ಯಾಕ್ ಮಾಡಲು ಮತ್ತು ಹೆಚ್ಚಿನ ಸಹಾಯ ಮಾಡಬಲ್ಲೆ!`,
+  en: `👋 Hello! I'm the <b>JanVaani Assistant</b>.<br>I can help you file complaints, track tickets, understand departments, and more!<br><br>What can I help you with today?`,
+  hi: `👋 नमस्ते! मैं <b>JanVaani सहायक</b> हूं।<br>मैं शिकायत दर्ज करने, टिकट ट्रैक करने और अधिक में मदद कर सकता हूं!`,
+  kn: `👋 ನಮಸ್ಕಾರ! ನಾನು <b>JanVaani ಸಹಾಯಕ</b>.<br>ದೂರು ಸಲ್ಲಿಸಲು, ಟಿಕೆಟ್ ಟ್ರ್ಯಾಕ್ ಮಾಡಲು ಮತ್ತು ಹೆಚ್ಚಿನ ಸಹಾಯ ಮಾಡಬಲ್ಲೆ!`,
 };
 
 let chatbotOpen = false;

@@ -1,5 +1,5 @@
-# 🏛️ Smart PS-CRM
-### Public Services — Citizen Relationship Management System
+# 🗣️ JanVaani
+### जनवाणी — Voice of the People | Citizen Grievance Platform
 
 > **One Platform. Every Grievance. Resolved.**
 
@@ -26,7 +26,7 @@ Citizens across Indian cities have **no unified, transparent system** to registe
 
 ## 💡 Solution
 
-**Smart PS-CRM** is a 100% client-side Single Page Application (SPA) that provides:
+**JanVaani** is a 100% client-side Single Page Application (SPA) that provides:
 
 ### 5-Step Complaint Workflow
 ```
@@ -142,7 +142,7 @@ Password: admin123
 ## 📁 Project Structure
 
 ```
-Smart PS CRM/
+JanVaani/
 │
 ├── index.html          # Main SPA — all pages in one file
 ├── app.js              # Core engine — all JavaScript logic
@@ -154,7 +154,7 @@ Smart PS CRM/
 
 ## 🏆 USP — What Makes Us Different
 
-| Existing Solutions | Smart PS-CRM |
+| Existing Solutions | JanVaani |
 |-------------------|-------------|
 | ❌ Paper forms, manual filing | ✅ Digital, instant, AI-assisted |
 | ❌ No tracking after filing | ✅ Real-time status at every stage |
